@@ -1,4 +1,3 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/87e14f4d5ec24f00b3048eeac5835b87)](https://www.codacy.com/app/KSExtrez/Imgeneus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KSExtrez/Imgeneus&amp;utm_campaign=Badge_Grade)
 # Imgeneus
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2184f6b167a3494a98680cfe2e466b8b)](https://app.codacy.com/app/KSExtrez/Imgeneus?utm_source=github.com&utm_medium=referral&utm_content=KSExtrez/Imgeneus&utm_campaign=Badge_Grade_Settings)
