@@ -7,6 +7,7 @@ We choose [Shaiya](https://shaiya.fandom.com/wiki/Main_Page) because  it is a si
 
 ## Details
 - Language: `C# 8`
+
 - Framework: `.NET Core 3.0`
 - Application type: `Console`
 - Database type: `MySQL`
