@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.28917.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imgeneus.Network", "src\Imgeneus.Network\Imgeneus.Network.csproj", "{ACB66768-583C-4EED-ADF8-3C8213782633}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Network.Tests", "test\Network.Tests\Network.Tests.csproj", "{68258E42-2F86-4824-A5BF-FE7A7AC9A66D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple Server", "Simple Server\Simple Server.csproj", "{F5DCA615-507C-4E9B-897A-9965CF97E951}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{ACB66768-583C-4EED-ADF8-3C8213782633}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACB66768-583C-4EED-ADF8-3C8213782633}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACB66768-583C-4EED-ADF8-3C8213782633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68258E42-2F86-4824-A5BF-FE7A7AC9A66D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68258E42-2F86-4824-A5BF-FE7A7AC9A66D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68258E42-2F86-4824-A5BF-FE7A7AC9A66D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68258E42-2F86-4824-A5BF-FE7A7AC9A66D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5DCA615-507C-4E9B-897A-9965CF97E951}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5DCA615-507C-4E9B-897A-9965CF97E951}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5DCA615-507C-4E9B-897A-9965CF97E951}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5DCA615-507C-4E9B-897A-9965CF97E951}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
