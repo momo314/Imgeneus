@@ -1,6 +1,8 @@
 ﻿using Imgeneus.Network.Client;
 using Imgeneus.Network.Server;
+using Imgeneus.Network.Common;
 using System.Threading;
+using System.Net.Sockets;
 
 namespace Simple_Server
 {
@@ -8,18 +10,7 @@ namespace Simple_Server
     {
         static void Main(string[] args)
         {
-            Thread thread = new Thread(ClientThread);
-            thread.Start();
-
-            Server server = new Server();
-            server.Start();
-        }
-
-        public static void ClientThread()
-        {
-            Thread.Sleep(1000);
-            Client client = new Client();
-            client.Connect();
+            System.Console.WriteLine("HelloWorld");
         }
     }
 }

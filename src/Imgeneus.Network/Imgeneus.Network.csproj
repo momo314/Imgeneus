@@ -5,11 +5,6 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Nullable>enable</Nullable>
     <LangVersion>8.0</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\" />
-  </ItemGroup>
 
 </Project>
