@@ -67,7 +67,9 @@ namespace Imgeneus.Network.Server
         public void Start()
         {
             if (this.IsRunning)
+            {
                 throw new InvalidOperationException("Server is already running.");
+            }
 
             this.Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             this.Socket.Bind(NetworkHelper.CreateIPEndPoint(this.ServerConfiguration.Host, this.ServerConfiguration.Port));
@@ -85,7 +87,9 @@ namespace Imgeneus.Network.Server
         public void Stop()
         {
             if (!this.IsRunning)
+            {
                 throw new InvalidOperationException("Server is not running.");
+            }
 
             this.Socket.Close();
             this.OnStop();
@@ -164,6 +168,7 @@ namespace Imgeneus.Network.Server
                 switch (e.LastOperation)
                 {
                     case SocketAsyncOperation.Accept:
+                        this.acceptor.ProcessAccept(e);
                         break;
                     case SocketAsyncOperation.Receive:
                         break;
@@ -185,8 +190,12 @@ namespace Imgeneus.Network.Server
         /// <param name="acceptedSocketEvent"></param>
         internal void CreateClient(SocketAsyncEventArgs acceptedSocketEvent)
         {
-            throw new NotImplementedException();
-        }
+            var client = Activator.CreateInstance(typeof(T), acceptedSocketEvent.AcceptSocket) as T;
 
+            if (this.clients.TryAdd(client.Id, client))
+            {
+                this.OnClientConnected(client);
+            }
+        }
     }
 }
