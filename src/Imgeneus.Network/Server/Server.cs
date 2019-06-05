@@ -1,37 +1,64 @@
-﻿using System;
-using System.Net;
+﻿using Imgeneus.Network.Common;
+using Imgeneus.Network.Server.Internal;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
 
 namespace Imgeneus.Network.Server
 {
     /// <summary>
     /// Provides a basic mechanism to start a TCP server.
     /// </summary>
-    public class Server
+    public class Server<T> : Connection, IServer where T : class, IServerClient
     {
-        private readonly Socket socket;
+        private readonly ConcurrentDictionary<Guid, T> clients;
+        private readonly BufferManager bufferManager;
+        private readonly ServerAcceptor<T> acceptor;
+
+        /// <inheritdoc />
+        public event EventHandler Started;
+
+        /// <inheritdoc />
+        public event EventHandler Stopped;
+
+        /// <inheritdoc />
+        public event EventHandler<Exception> Error;
+
+        /// <inheritdoc />
+        public event EventHandler<IServerClient> ClientConnected;
+
+        /// <inheritdoc />
+        public event EventHandler<IServerClient> ClientDisconnected;
+
+        /// <inheritdoc />
+        public ServerConfiguration ServerConfiguration { get; }
+
+        /// <inheritdoc />
+        public bool IsRunning { get; private set; }
 
         /// <summary>
-        /// Gets the host IP.
+        /// Crestes a default <see cref="Server{T}"/> instance.
         /// </summary>
-        public string IP { get; }
-
-        /// <summary>
-        /// Gets the host Port.
-        /// </summary>
-        public int Port { get; }
-
-        /// <summary>
-        /// Creates a new <see cref="Server"/> instance.
-        /// </summary>
-        public Server()
+        /// <param name="host">The server host.</param>
+        /// <param name="port">The server listening port.</param>
+        public Server(string host, int port)
+            : this(new ServerConfiguration(host, port))
         {
-            this.IP = "127.0.0.1";
-            this.Port = 30800;
 
-            // creates a new TCP socket
-            this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Server{T}"/> using <see cref="Server.ServerConfiguration"/>.
+        /// </summary>
+        /// <param name="configuration">The <see cref="Server.ServerConfiguration"/>.</param>
+        public Server(ServerConfiguration configuration)
+            : base(new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+        {
+            this.ServerConfiguration = configuration;
+            this.clients = new ConcurrentDictionary<Guid, T>();
+            this.acceptor = new ServerAcceptor<T>(this);
+            this.bufferManager = new BufferManager(configuration.MaximumNumberOfConnections, configuration.ClientBufferSize);
         }
 
         /// <summary>
@@ -39,37 +66,17 @@ namespace Imgeneus.Network.Server
         /// </summary>
         public void Start()
         {
-            // Inform the user that the server is being initialised
-            Console.WriteLine("Initialising server...");
-            
-            // Creates a new End point
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse(IP), Port);
+            if (this.IsRunning)
+                throw new InvalidOperationException("Server is already running.");
 
-            // Bind the server options
-            this.socket.Bind(ep);
+            this.Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            this.Socket.Bind(NetworkHelper.CreateIPEndPoint(this.ServerConfiguration.Host, this.ServerConfiguration.Port));
+            this.Socket.Listen(this.ServerConfiguration.Backlog);
 
-            // Start to listen
-            this.socket.Listen(50);
+            this.IsRunning = true;
+            this.OnStart();
+            this.acceptor.StartAccept();
 
-            Console.WriteLine($"Server started and listening on {ep.ToString()}");
-
-            // Start to accept connections
-            Socket accept = this.socket.Accept();
-
-            // Inform the user that a new client is connected
-            Console.WriteLine($"Client accepted from {accept.RemoteEndPoint.ToString()} ");
-
-            // Send a packet to connected client
-            accept.Send(Encoding.UTF8.GetBytes("Hello from server"));
-
-            byte[] buffer = new byte[50];
-
-            // Receive a packet from client
-            accept.Receive(buffer);
-
-            // Print the received packet
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(Encoding.UTF8.GetString(buffer));
         }
 
         /// <summary>
@@ -77,10 +84,109 @@ namespace Imgeneus.Network.Server
         /// </summary>
         public void Stop()
         {
-            // Close the socket
-            this.socket.Close();
-            this.socket.Dispose();
-            Console.WriteLine($"Server Stopped");
+            if (!this.IsRunning)
+                throw new InvalidOperationException("Server is not running.");
+
+            this.Socket.Close();
+            this.OnStop();
         }
+
+        /// <inheritdoc />
+        public IServerClient GetClient(Guid clientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void DisconnectClient(IServerClient client)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void DisconnectClient(Guid clientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void SendPacketTo(IServerClient client, byte[] packetData)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void SendPacketTo(IEnumerable<IServerClient> clients, byte[] packetData)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void SendPacketToAll(byte[] packetData)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void OnStart()
+        {
+            this.Started?.Invoke(this, null);
+        }
+
+        protected virtual void OnStop()
+        {
+            this.Stopped?.Invoke(this, null);
+        }
+
+        protected virtual void OnError(Exception exception)
+        {
+            this.Error?.Invoke(this, exception);
+        }
+
+        protected virtual void OnClientConnected(T client)
+        {
+            this.ClientConnected?.Invoke(this, client);
+        }
+
+        protected virtual void OnClientDisconnected(T client)
+        {
+            this.ClientDisconnected?.Invoke(this, client);
+        }
+
+        /// <summary>
+        /// Method called when a <see cref="SocketAsyncEventArgs"/> completes an async operation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        internal void OnSocketCompleted(object sender, SocketAsyncEventArgs e)
+        {
+            try
+            {
+                switch (e.LastOperation)
+                {
+                    case SocketAsyncOperation.Accept:
+                        break;
+                    case SocketAsyncOperation.Receive:
+                        break;
+                    case SocketAsyncOperation.Send:
+                        break;
+                    default:
+                        throw new InvalidOperationException("Unexpected SocketAsyncOperation.");
+                }
+            }
+            catch (Exception exception)
+            {
+                this.OnError(exception);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new accepted client instance.
+        /// </summary>
+        /// <param name="acceptedSocketEvent"></param>
+        internal void CreateClient(SocketAsyncEventArgs acceptedSocketEvent)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

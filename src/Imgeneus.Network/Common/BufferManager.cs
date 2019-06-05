@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Concurrent;
 using System.Net.Sockets;
-using System.Collections.Concurrent;
 
 namespace Imgeneus.Network.Common
 {
@@ -73,9 +70,6 @@ namespace Imgeneus.Network.Common
         /// <summary>
         /// Dispose the <see cref="BufferManager"/> instance.
         /// </summary>
-        public void Dispose()
-        {
-            this.freeBufferIndexes.Clear();
-        }
+        public void Dispose() => this.freeBufferIndexes.Clear();
     }
 }

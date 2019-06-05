@@ -5,7 +5,7 @@ namespace Imgeneus.Network.Common
 {
     public class Connection : IConnection
     {
-        private bool disposedValue = false;
+        private bool disposedValue;
 
         /// <summary>
         /// Gets the connection unique idenfified.
@@ -31,7 +31,7 @@ namespace Imgeneus.Network.Common
         /// <summary>
         /// Dipose the <see cref="Connection"/> resources.
         /// </summary>
-        /// <param name="disposing"></param>
+        /// <param name="disposing">The disposing value.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -51,7 +51,7 @@ namespace Imgeneus.Network.Common
         /// Performs application-defined tasks associated with freeing, releasing, or resetting
         /// unmanaged resources.
         /// </summary>
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             Dispose(true);
         }
