@@ -15,7 +15,7 @@ In this documentation, you will find every Shaiya packet structure.
 
 | Packet Name | Packet Value | Description |
 | ----------- | ------------ | ----------- |
-| [LOGIN_HANDSHAKE](/docs/Packets/LOGIN.md#handshake-0xa101) | `0xA101` | Send a RSA public key, modulus and exponent. |
+| [LOGIN_HANDSHAKE](/docs/packets/LOGIN.md#handshake-0xa101) | `0xA101` | Send a RSA public key, modulus and exponent. |
 | [LOGIN_REQUEST](/docs/packets/LOGIN.md#login_request-0xa102) | `0xA102` | Request login to the server. |
 | [SERVER_LIST](/docs/packets/LOGIN.md#server_list-0xa201) | `0xA201` | Send the list of available servers to the client. |
 | [SELECT_SERVER](/docs/packets/LOGIN.md#select_server-0xa202) | `0xA202` | Send an error message to the client. |
