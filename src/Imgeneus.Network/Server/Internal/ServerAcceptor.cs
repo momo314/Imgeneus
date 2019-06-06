@@ -2,7 +2,7 @@
 
 namespace Imgeneus.Network.Server.Internal
 {
-    internal class ServerAcceptor<T> where T : class, IServerClient
+    internal sealed class ServerAcceptor<T> where T : class, IServerClient
     {
         private readonly Server<T> server;
 
