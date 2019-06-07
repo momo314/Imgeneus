@@ -16,7 +16,7 @@ namespace Imgeneus.Network.Common
         /// <summary>
         /// Creates a new <see cref="Sender"/> instance.
         /// </summary>
-        public Sender()
+        protected Sender()
         {
             this.sendingQueue = new BlockingCollection<PacketData>();
             this.cancellationTokenSource = new CancellationTokenSource();

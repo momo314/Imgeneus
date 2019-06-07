@@ -54,6 +54,7 @@ namespace Imgeneus.Network.Server.Internal
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
+            this.autoSendEvent.Dispose();
             this.WritePool.Clear();
         }
     }
