@@ -28,7 +28,9 @@ namespace Imgeneus.Network.Common
         public BufferManager(int maximumNumberOfClients, int bufferSize)
         {
             this.bufferSize = bufferSize;
-            this.buffer = new byte[maximumNumberOfClients * bufferSize];
+
+            // Creates a buffer size, for reader and writer sockets
+            this.buffer = new byte[maximumNumberOfClients * bufferSize * 2];
             this.freeBufferIndexes = new ConcurrentStack<int>();
         }
 

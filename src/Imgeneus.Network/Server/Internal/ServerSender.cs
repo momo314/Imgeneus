@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Imgeneus.Network.Common;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 
 namespace Imgeneus.Network.Server.Internal
 {
-    internal sealed class ServerSender
+    internal sealed class ServerSender : Sender
     {
-        private readonly AutoResetEvent autoResetEvent;
+        private readonly AutoResetEvent autoSendEvent;
 
         /// <summary>
         /// Gets the sender <see cref="SocketAsyncEventArgs"/> pool.
@@ -22,7 +20,41 @@ namespace Imgeneus.Network.Server.Internal
         public ServerSender()
         {
             this.WritePool = new ConcurrentStack<SocketAsyncEventArgs>();
-            this.autoResetEvent = new AutoResetEvent(false);
+            this.autoSendEvent = new AutoResetEvent(false);
+        }
+
+        /// <inheritdoc />
+        protected override void SendPacket(PacketData packetData)
+        {
+            if (this.WritePool.TryPop(out SocketAsyncEventArgs writeSocket))
+            {
+                writeSocket.SetBuffer(packetData.Data, 0, packetData.Data.Length);
+                writeSocket.UserToken = packetData.Connection;
+
+                if (!packetData.Connection.Socket.SendAsync(writeSocket))
+                {
+                    this.SendOperationCompleted(writeSocket);
+                }
+            }
+            else
+            {
+                this.autoSendEvent.WaitOne();
+                this.SendPacket(packetData);
+            }
+        }
+
+        /// <inheritdoc />
+        public override void SendOperationCompleted(SocketAsyncEventArgs e)
+        {
+            this.WritePool.Push(e);
+            this.autoSendEvent.Set();
+        }
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            this.WritePool.Clear();
         }
     }
 }
