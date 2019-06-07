@@ -80,7 +80,7 @@ namespace Imgeneus.Network.Server.Internal
         /// </summary>
         /// <param name="client">the client.</param>
         /// <param name="packetData">Received packet data.</param>
-        private void DispatchPacket(ServerClient client, byte[] packetData)
+        private static void DispatchPacket(ServerClient client, byte[] packetData)
         {
             Task.Run(() =>
             {

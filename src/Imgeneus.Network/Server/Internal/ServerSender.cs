@@ -1,11 +1,12 @@
 ﻿using Imgeneus.Network.Common;
+using System;
 using System.Collections.Concurrent;
 using System.Net.Sockets;
 using System.Threading;
 
 namespace Imgeneus.Network.Server.Internal
 {
-    internal sealed class ServerSender : Sender
+    internal sealed class ServerSender : Sender, IDisposable
     {
         private readonly AutoResetEvent autoSendEvent;
 
@@ -53,9 +54,9 @@ namespace Imgeneus.Network.Server.Internal
         /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
             this.autoSendEvent.Dispose();
             this.WritePool.Clear();
+            base.Dispose(disposing);
         }
     }
 }
