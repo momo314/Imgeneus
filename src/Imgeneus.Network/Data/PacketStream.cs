@@ -7,12 +7,13 @@ namespace Imgeneus.Network.Data
 {
     public class PacketStream : MemoryStream, IPacketStream
     {
-        private readonly BinaryReader? reader;
-        private readonly BinaryWriter? writer;
+        private readonly BinaryReader reader;
+        private readonly BinaryWriter writer;
 
         /// <inheritdoc />
         public PacketStateType State { get; }
 
+        /// <inheritdoc />
         public bool IsEndOfStream => this.Position >= this.Length;
 
         /// <inheritdoc />
@@ -60,7 +61,9 @@ namespace Imgeneus.Network.Data
             }
 
             if (WriteMethods.TryGetValue(typeof(T), out Action<BinaryWriter, object> method))
+            {
                 method.Invoke(this.writer, value);
+            }
         }
 
         /// <inheritdoc />
@@ -117,7 +120,9 @@ namespace Imgeneus.Network.Data
                 {
                     writer.Write(((byte[])value).Length);
                     if (((byte[])value).Length > 0)
+                    {
                         writer.Write((byte[])value);
+                    }    
                 }
             },
             { typeof(string),
@@ -125,7 +130,9 @@ namespace Imgeneus.Network.Data
                 {
                     writer.Write(value.ToString().Length);
                     if (value.ToString().Length > 0)
+                    {
                         writer.Write(Encoding.UTF8.GetBytes(value.ToString()));
+                    }
                 }
             }
         };

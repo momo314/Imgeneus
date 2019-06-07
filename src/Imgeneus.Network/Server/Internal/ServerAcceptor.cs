@@ -33,7 +33,7 @@ namespace Imgeneus.Network.Server.Internal
         /// <param name="args">The <see cref="SocketAsyncEventArgs"/> of the client.</param>
         private void Accept(SocketAsyncEventArgs e)
         {
-            if (e.AcceptSocket == null)
+            if (e.AcceptSocket != null)
             {
                 e.AcceptSocket = null;
             }

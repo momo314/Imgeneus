@@ -14,6 +14,8 @@ namespace Imgeneus.Network.Server
     {
         private readonly ConcurrentDictionary<Guid, T> clients;
         private readonly BufferManager bufferManager;
+        private readonly ServerReceiver receiver;
+        private readonly ServerSender sender;
         private readonly ServerAcceptor<T> acceptor;
 
         /// <inheritdoc />
@@ -58,6 +60,8 @@ namespace Imgeneus.Network.Server
             this.ServerConfiguration = configuration;
             this.clients = new ConcurrentDictionary<Guid, T>();
             this.acceptor = new ServerAcceptor<T>(this);
+            this.receiver = new ServerReceiver(this);
+            this.sender = new ServerSender();
             this.bufferManager = new BufferManager(configuration.MaximumNumberOfConnections, configuration.ClientBufferSize);
         }
 
@@ -74,9 +78,11 @@ namespace Imgeneus.Network.Server
             this.Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             this.Socket.Bind(NetworkHelper.CreateIPEndPoint(this.ServerConfiguration.Host, this.ServerConfiguration.Port));
             this.Socket.Listen(this.ServerConfiguration.Backlog);
+            this.FillPool();
 
             this.IsRunning = true;
             this.OnStart();
+            this.sender.Start();
             this.acceptor.StartAccept();
 
         }
@@ -91,44 +97,51 @@ namespace Imgeneus.Network.Server
                 throw new InvalidOperationException("Server is not running.");
             }
 
+            this.sender.Stop();
             this.Socket.Close();
             this.OnStop();
         }
 
         /// <inheritdoc />
-        public IServerClient GetClient(Guid clientId)
-        {
-            throw new NotImplementedException();
-        }
+        public IServerClient? GetClient(Guid clientId) 
+            => this.clients.TryGetValue(clientId, out T client) ? client : default;
 
         /// <inheritdoc />
-        public void DisconnectClient(IServerClient client)
-        {
-            throw new NotImplementedException();
-        }
+        public void DisconnectClient(IServerClient client) => this.DisconnectClient(client.Id);
 
         /// <inheritdoc />
         public void DisconnectClient(Guid clientId)
         {
-            throw new NotImplementedException();
+            if (this.clients.TryRemove(clientId, out T client))
+            {
+                this.OnClientConnected(client);
+                client.Dispose();
+            }
         }
 
         /// <inheritdoc />
-        public void SendPacketTo(IServerClient client, byte[] packetData)
-        {
-            throw new NotImplementedException();
-        }
+        public void SendPacketTo(IServerClient client, byte[] packetData) 
+            => this.sender.AddPAcketToQueue(new PacketData(client, packetData));
 
         /// <inheritdoc />
         public void SendPacketTo(IEnumerable<IServerClient> clients, byte[] packetData)
         {
-            throw new NotImplementedException();
+            foreach (var client in clients)
+            {
+                this.SendPacketTo(client, packetData);
+            }
         }
 
         /// <inheritdoc />
         public void SendPacketToAll(byte[] packetData)
+            => this.SendPacketTo(this.clients.Values, packetData);
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            this.receiver.Dispose();
+            this.sender.Dispose();
+            base.Dispose(disposing);
         }
 
         protected virtual void OnStart()
@@ -156,6 +169,24 @@ namespace Imgeneus.Network.Server
             this.ClientDisconnected?.Invoke(this, client);
         }
 
+        private void FillPool()
+        {
+            for (int i = 0; i < this.ServerConfiguration.MaximumNumberOfConnections; i++)
+            {
+                var readSocket = new SocketAsyncEventArgs();
+                var writeSocket = new SocketAsyncEventArgs();
+
+                readSocket.Completed += this.OnSocketCompleted;
+                writeSocket.Completed += this.OnSocketCompleted;
+
+                this.bufferManager.SetBuffer(readSocket);
+                this.bufferManager.SetBuffer(writeSocket);
+
+                this.receiver.ReadPool.Push(readSocket);
+                this.sender.WritePool.Push(writeSocket);
+            }
+        }
+
         /// <summary>
         /// Method called when a <see cref="SocketAsyncEventArgs"/> completes an async operation.
         /// </summary>
@@ -171,8 +202,10 @@ namespace Imgeneus.Network.Server
                         this.acceptor.ProcessAccept(e);
                         break;
                     case SocketAsyncOperation.Receive:
+                        this.receiver.Receive(e);
                         break;
                     case SocketAsyncOperation.Send:
+                        this.sender.SendOperationCompleted(e);
                         break;
                     default:
                         throw new InvalidOperationException("Unexpected SocketAsyncOperation.");
@@ -190,11 +223,25 @@ namespace Imgeneus.Network.Server
         /// <param name="acceptedSocketEvent"></param>
         internal void CreateClient(SocketAsyncEventArgs acceptedSocketEvent)
         {
-            var client = Activator.CreateInstance(typeof(T), acceptedSocketEvent.AcceptSocket) as T;
-
-            if (this.clients.TryAdd(client.Id, client))
+            if (this.receiver.ReadPool.TryPop(out SocketAsyncEventArgs readSocket))
             {
-                this.OnClientConnected(client);
+                var client = Activator.CreateInstance(typeof(T), this, acceptedSocketEvent.AcceptSocket) as T;
+
+                if (this.clients.TryAdd(client.Id, client))
+                {
+                    this.OnClientConnected(client);
+
+                    readSocket.UserToken = client;
+
+                    if (!acceptedSocketEvent.AcceptSocket.ReceiveAsync(readSocket))
+                    {
+                        this.receiver.Receive(readSocket);
+                    }
+                }
+                else
+                {
+                    throw new InvalidProgramException($"Client {client.Id} can't add to client list.");
+                }
             }
         }
     }
