@@ -12,7 +12,7 @@ namespace Imgeneus.Network.Common
     {
         private readonly int bufferSize;
         private int currentIndex;
-        private byte[] buffer;
+        private readonly byte[] buffer;
         private readonly ConcurrentStack<int> freeBufferIndexes;
 
         /// <summary>

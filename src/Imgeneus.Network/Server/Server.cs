@@ -103,7 +103,7 @@ namespace Imgeneus.Network.Server
         }
 
         /// <inheritdoc />
-        public IServerClient? GetClient(Guid clientId) 
+        public IServerClient GetClient(Guid clientId) 
             => this.clients.TryGetValue(clientId, out T client) ? client : default;
 
         /// <inheritdoc />
@@ -114,7 +114,7 @@ namespace Imgeneus.Network.Server
         {
             if (this.clients.TryRemove(clientId, out T client))
             {
-                this.OnClientConnected(client);
+                this.OnClientDisconnected(client);
                 client.Dispose();
             }
         }

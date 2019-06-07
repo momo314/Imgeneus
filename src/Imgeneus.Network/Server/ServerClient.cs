@@ -14,7 +14,7 @@ namespace Imgeneus.Network.Server
         /// Creates a new <see cref="ServerClient"/> instance.
         /// </summary>
         /// <param name="acceptedSocket">Net User socket</param>
-        public ServerClient(IServer server, Socket acceptedSocket)
+        protected ServerClient(IServer server, Socket acceptedSocket)
             : base(acceptedSocket)
         {
             this.Server = server;
