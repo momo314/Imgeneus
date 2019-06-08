@@ -1,4 +1,4 @@
-### Imgeneus Login structures
+## Imgeneus Login structures
 
 ### World details
 | Name | Data type | Description |
