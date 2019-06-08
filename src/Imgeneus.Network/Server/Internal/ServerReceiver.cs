@@ -47,7 +47,7 @@ namespace Imgeneus.Network.Server.Internal
                 var receivedBuffer = new byte[e.BytesTransferred];
                 Buffer.BlockCopy(e.Buffer, e.Offset, receivedBuffer, 0, e.BytesTransferred);
 
-                this.DispatchPacket(client, receivedBuffer);
+                ServerReceiver.DispatchPacket(client, receivedBuffer);
 
                 if (!client.Socket.ReceiveAsync(e))
                 {

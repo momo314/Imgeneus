@@ -51,7 +51,7 @@ namespace Imgeneus.Network.Common
         /// Performs application-defined tasks associated with freeing, releasing, or resetting
         /// unmanaged resources.
         /// </summary>
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             Dispose(true);
         }
