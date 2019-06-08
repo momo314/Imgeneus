@@ -37,6 +37,6 @@ namespace Imgeneus.Network.Client
         /// Sends a packet to the remote server.
         /// </summary>
         /// <param name="packet">The packet stream.</param>
-        void SendMessage(IPacketStream packet);
+        void SendPacket(IPacketStream packet);
     }
 }
