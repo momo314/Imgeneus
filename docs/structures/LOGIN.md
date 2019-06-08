@@ -1,6 +1,6 @@
 ### Imgeneus Login structures
 
-## World details
+### World details
 | Name | Data type | Description |
 | ----------- | ------------ | ----------- |
 | World ID | ushort | The connected `Imgeneus.World` unique id. |
@@ -9,7 +9,7 @@
 | World Capacity | ushort | The number of maximum people connected allowed. |
 | World Name | byte[32] | The `Imgeneus.World` Server name. |
 
-## Login result
+### Login result
 | Index | Name |
 | ----------- | ------------ |
 | 0 | Success |
@@ -29,7 +29,7 @@
 | 14 | `null`(Error message 10104) |
 | 15 | Deadline has expired. |
 
-## Selec Server result
+### Selec Server result
 
 | Index | Name |
 | ----------- | ------------ |
