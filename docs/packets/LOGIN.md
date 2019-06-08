@@ -1,6 +1,6 @@
 ## Login Server packets
 
-### HANDSHAKE (0xA101)
+### LOGIN_HANDSHAKE (0xA101)
 
 ### LOGIN_REQUEST (0xA102)
 
