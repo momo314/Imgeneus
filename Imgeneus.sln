@@ -5,13 +5,11 @@ VisualStudioVersion = 16.0.28917.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Imgeneus.Network", "src\Imgeneus.Network\Imgeneus.Network.csproj", "{ACB66768-583C-4EED-ADF8-3C8213782633}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple Server", "Simple Server\Simple Server.csproj", "{F5DCA615-507C-4E9B-897A-9965CF97E951}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Servers", "Servers", "{C78BD729-47A2-4F2C-B0E2-9B4AE19D815E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imgeneus.Login", "src\Imgeneus.Login\Imgeneus.Login.csproj", "{5BC94713-FCD3-44F6-9247-8D2546E93BA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Imgeneus.Login", "src\Imgeneus.Login\Imgeneus.Login.csproj", "{5BC94713-FCD3-44F6-9247-8D2546E93BA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imgeneus.Core", "src\Imgeneus.Core\Imgeneus.Core.csproj", "{67B07FCE-F1E6-4601-A95F-6954FAFA1F46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Imgeneus.Core", "src\Imgeneus.Core\Imgeneus.Core.csproj", "{67B07FCE-F1E6-4601-A95F-6954FAFA1F46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{ACB66768-583C-4EED-ADF8-3C8213782633}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACB66768-583C-4EED-ADF8-3C8213782633}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACB66768-583C-4EED-ADF8-3C8213782633}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5DCA615-507C-4E9B-897A-9965CF97E951}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5DCA615-507C-4E9B-897A-9965CF97E951}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5DCA615-507C-4E9B-897A-9965CF97E951}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5DCA615-507C-4E9B-897A-9965CF97E951}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5BC94713-FCD3-44F6-9247-8D2546E93BA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5BC94713-FCD3-44F6-9247-8D2546E93BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BC94713-FCD3-44F6-9247-8D2546E93BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
