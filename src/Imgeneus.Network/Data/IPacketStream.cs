@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Imgeneus.Network.Packets;
+using System;
 using System.IO;
 
 namespace Imgeneus.Network.Data
@@ -11,6 +12,11 @@ namespace Imgeneus.Network.Data
         PacketStateType State { get; }
 
         /// <summary>
+        /// Gets the packet operation code type
+        /// </summary>
+        PacketType PacketType { get; }
+
+        /// <summary>
         /// Gets a value that indicates if the current cursor is at the end of the packet stream.
         /// </summary>
         bool IsEndOfStream { get; }
@@ -19,6 +25,11 @@ namespace Imgeneus.Network.Data
         /// Gets the length of the packet stream.
         /// </summary>
         long Length { get; }
+
+        /// <summary>
+        /// Gets the packet length.
+        /// </summary>
+        public ushort PacketLength { get; }
 
         /// <summary>
         /// Gets the current position of the cursor in the packet stream.
@@ -36,6 +47,13 @@ namespace Imgeneus.Network.Data
         /// <typeparam name="T">Type of the value</typeparam>
         /// <returns>The value read and converted to the type.</returns>
         T Read<T>();
+
+        /// <summary>
+        /// Reads an array of T value from the packet stream.
+        /// </summary>
+        /// <typeparam name="T">Type of the value</typeparam>
+        /// <returns>The value read and converted to the type.</returns>
+        T[] Read<T>(int count);
 
         /// <summary>
         /// Writes a T value in the packet stream.

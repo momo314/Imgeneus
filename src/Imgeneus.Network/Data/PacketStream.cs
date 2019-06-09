@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Imgeneus.Network.Packets;
 
 namespace Imgeneus.Network.Data
 {
@@ -17,7 +18,13 @@ namespace Imgeneus.Network.Data
         public bool IsEndOfStream => this.Position >= this.Length;
 
         /// <inheritdoc />
+        public ushort PacketLength { get; internal set; }
+
+        /// <inheritdoc />
         public virtual byte[] Buffer => this.GetStreamBuffer();
+
+        /// <inheritdoc />
+        public PacketType PacketType { get; internal set; }
 
         /// <summary>
         /// Creates and initializes a new <see cref="PacketStream"/> instance in write-only mode.
@@ -37,10 +44,16 @@ namespace Imgeneus.Network.Data
         {
             this.reader = new BinaryReader(this);
             this.State = PacketStateType.Read;
+
+            // Read the packet length
+            this.PacketLength = this.Read<ushort>();
+
+            // Read the pcket operation code
+            this.PacketType = (PacketType)this.Read<ushort>();
         }
 
         /// <inheritdoc />
-        public virtual T Read<T>()
+        public T Read<T>()
         {
             if (this.State != PacketStateType.Read)
             {
@@ -53,7 +66,25 @@ namespace Imgeneus.Network.Data
         }
 
         /// <inheritdoc />
-        public virtual void Write<T>(T value)
+        public T[] Read<T>(int count)
+        {
+            if (this.State != PacketStateType.Read)
+            {
+                throw new InvalidOperationException("Packet is in write-only mode.");
+            }
+
+            List<T> buffer = new List<T>();
+
+            for (int i = 0; i < count; i++)
+            {
+                buffer.Add(this.Read<T>());
+            }
+
+            return buffer.ToArray();
+        }
+
+        /// <inheritdoc />
+        public void Write<T>(T value)
         {
             if (this.State != PacketStateType.Write)
             {
@@ -93,8 +124,6 @@ namespace Imgeneus.Network.Data
             { typeof(float), reader => reader.ReadSingle() },
             { typeof(double), reader => reader.ReadDouble() },
             { typeof(decimal), reader => reader.ReadDecimal() },
-            { typeof(byte[]), reader => reader.ReadBytes(count: reader.ReadInt32()) },
-            { typeof(string), reader => new string(reader.ReadChars(count: reader.ReadInt32())) },
         };
 
         /// <summary>
@@ -131,7 +160,7 @@ namespace Imgeneus.Network.Data
                     writer.Write(value.ToString().Length);
                     if (value.ToString().Length > 0)
                     {
-                        writer.Write(Encoding.UTF8.GetBytes(value.ToString()));
+                        writer.Write(Encoding.UTF8.GetBytes(value.ToString() + '\0'));
                     }
                 }
             }

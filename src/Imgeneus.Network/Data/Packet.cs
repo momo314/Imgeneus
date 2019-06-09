@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Imgeneus.Network.Packets;
+using System.IO;
 
 namespace Imgeneus.Network.Data
 {
@@ -15,6 +16,7 @@ namespace Imgeneus.Network.Data
             // The packet size
             this.Write<ushort>(0);
             this.Write<ushort>(opcode);
+            this.PacketType = (PacketType)opcode;
         }
 
         /// <summary>
