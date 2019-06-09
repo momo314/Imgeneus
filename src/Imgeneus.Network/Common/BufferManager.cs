@@ -12,13 +12,13 @@ namespace Imgeneus.Network.Common
     {
         private readonly int bufferSize;
         private int currentIndex;
-        private readonly byte[] buffer;
+        private byte[] buffer;
         private readonly ConcurrentStack<int> freeBufferIndexes;
 
         /// <summary>
         /// Gets the buffer size.
         /// </summary>
-        public int Size => this.buffer.Length;
+        public int Size => this.buffer != null ? this.buffer.Length : 0;
 
         /// <summary>
         /// Creates a new <see cref="BufferManager"/> instance.
@@ -72,6 +72,10 @@ namespace Imgeneus.Network.Common
         /// <summary>
         /// Dispose the <see cref="BufferManager"/> instance.
         /// </summary>
-        public void Dispose() => this.freeBufferIndexes.Clear();
+        public void Dispose()
+        {
+            this.freeBufferIndexes.Clear();
+            this.buffer = null;
+        }
     }
 }

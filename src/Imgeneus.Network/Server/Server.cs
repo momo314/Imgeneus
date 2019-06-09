@@ -12,7 +12,7 @@ namespace Imgeneus.Network.Server
     /// </summary>
     public class Server<T> : Connection, IServer where T : class, IServerClient
     {
-        private readonly ConcurrentDictionary<Guid, T> clients;
+        protected readonly ConcurrentDictionary<Guid, T> clients;
         private readonly BufferManager bufferManager;
         private readonly ServerReceiver receiver;
         private readonly ServerSender sender;

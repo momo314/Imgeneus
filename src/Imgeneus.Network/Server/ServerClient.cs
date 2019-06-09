@@ -10,6 +10,9 @@ namespace Imgeneus.Network.Server
         /// <inheritdoc />
         public IServer Server { get; internal set; }
 
+        /// <inheritdoc />
+        public string RemoteEndPoint { get; }
+
         /// <summary>
         /// Creates a new <see cref="ServerClient"/> instance.
         /// </summary>
@@ -18,6 +21,7 @@ namespace Imgeneus.Network.Server
             : base(acceptedSocket)
         {
             this.Server = server;
+            this.RemoteEndPoint = acceptedSocket.RemoteEndPoint.ToString();
         }
 
         /// <inheritdoc />

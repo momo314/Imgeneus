@@ -13,6 +13,11 @@ namespace Imgeneus.Network.Server
         IServer Server { get; }
 
         /// <summary>
+        /// Gets the remote end point (IP and port) for this client.
+        /// </summary>
+        string RemoteEndPoint { get; }
+
+        /// <summary>
         /// Handle an incoming packet.
         /// </summary>
         /// <param name="packet">The incoming packet.</param>

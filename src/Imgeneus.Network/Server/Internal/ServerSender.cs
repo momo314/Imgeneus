@@ -55,6 +55,12 @@ namespace Imgeneus.Network.Server.Internal
         protected override void Dispose(bool disposing)
         {
             this.autoSendEvent.Dispose();
+
+            foreach (var socket in WritePool)
+            {
+                socket.Dispose();
+            }
+
             this.WritePool.Clear();
             base.Dispose(disposing);
         }
