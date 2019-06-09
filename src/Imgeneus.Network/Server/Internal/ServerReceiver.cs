@@ -37,7 +37,7 @@ namespace Imgeneus.Network.Server.Internal
                 throw new ArgumentNullException("Cannot receive data from a null socket event.", nameof(e));
             }
 
-            if (e.SocketError == SocketError.Success && e.BytesTransferred > 2)
+            if (e.SocketError == SocketError.Success && e.BytesTransferred >= 4)
             {
                 if (!(e.UserToken is ServerClient client))
                 {

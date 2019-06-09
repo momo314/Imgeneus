@@ -18,9 +18,7 @@ namespace Imgeneus.Core.Helpers
                 Save(path, new T());
             }
 
-            string jsonContent = File.ReadAllText(path);
-
-            return JsonSerializer.Parse<T>(jsonContent);
+            return JsonSerializer.Parse<T>(File.ReadAllText(path));
 
         }
 
@@ -37,9 +35,7 @@ namespace Imgeneus.Core.Helpers
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
             }
 
-            string jsonSerialized = JsonSerializer.ToString<T>(value);
-
-            File.WriteAllText(path, jsonSerialized);
+            File.WriteAllText(path, JsonSerializer.ToString<T>(value));
         }
     }
 }

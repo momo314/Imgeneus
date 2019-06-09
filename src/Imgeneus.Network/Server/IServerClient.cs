@@ -18,6 +18,11 @@ namespace Imgeneus.Network.Server
         string RemoteEndPoint { get; }
 
         /// <summary>
+        /// Disconnects the current <see cref="IServerClient"/>.
+        /// </summary>
+        void Disconnect();
+
+        /// <summary>
         /// Handle an incoming packet.
         /// </summary>
         /// <param name="packet">The incoming packet.</param>

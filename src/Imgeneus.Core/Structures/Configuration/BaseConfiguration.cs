@@ -2,6 +2,8 @@
 {
     public class BaseConfiguration
     {
+        private readonly string defaultHost = "127.0.0.1";
+
         /// <summary>
         /// Gets or sets the host.
         /// </summary>
@@ -11,6 +13,11 @@
         /// Gets or sets the port.
         /// </summary>
         public int Port { get; set; }
+
+        public BaseConfiguration()
+        {
+            this.Host = defaultHost;
+        }
 
     }
 }
