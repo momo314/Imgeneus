@@ -18,7 +18,7 @@ namespace Imgeneus.Core.DependencyInjection
         /// Creates a new <see cref="InjectableAttribute"/> instance.
         /// </summary>
         /// <param name="serviceLifeTime"></param>
-        public InjectableAttribute(ServiceLifetime serviceLifeTime = ServiceLifetime.Transient)
+        public InjectableAttribute(ServiceLifetime serviceLifeTime)
         {
             this.LifeTime = serviceLifeTime;
         }

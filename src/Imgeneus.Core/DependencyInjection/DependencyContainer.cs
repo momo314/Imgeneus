@@ -91,7 +91,7 @@ namespace Imgeneus.Core.DependencyInjection
         /// <typeparam name="TImplementation">The service implementation type.</typeparam>
         /// <typeparam name="TService">The service type.</typeparam>
         /// <param name="serviceLifetime">The service life time.</param>
-        public void Register<TImplementation, TService>(ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
+        public void Register<TImplementation, TService>(ServiceLifetime serviceLifetime)
             => this.Register(typeof(TImplementation), typeof(TService), serviceLifetime);
 
         /// <summary>
@@ -115,6 +115,13 @@ namespace Imgeneus.Core.DependencyInjection
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public T Resolve<T>() where T : class => this.Resolve(typeof(T)) as T;
+
+        /// <summary>
+        /// Configure the <see cref="DependencyContainer"/>.
+        /// </summary>
+        /// <param name="serviceBuilder"></param>
+        public void Configure(Action<IServiceCollection> serviceBuilder) => serviceBuilder(this.services);
+
 
         /// <summary>
         /// Dispose the dependency container's resources.

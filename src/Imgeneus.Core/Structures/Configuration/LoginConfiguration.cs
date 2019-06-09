@@ -5,7 +5,7 @@
         /// <summary>
         /// Gets or sets the client build version
         /// </summary>
-        public string BuildVersion { get; set; }
+        public int BuildVersion { get; set; }
 
         /// <summary>
         /// Gets or sets the password encryption key.
