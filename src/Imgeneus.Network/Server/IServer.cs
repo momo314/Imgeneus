@@ -6,12 +6,6 @@ namespace Imgeneus.Network.Server
 {
     public interface IServer : IConnection
     {
-        event EventHandler Started;
-        event EventHandler Stopped;
-        event EventHandler<Exception> Error;
-        event EventHandler<IServerClient> ClientConnected;
-        event EventHandler<IServerClient> ClientDisconnected;
-
         /// <summary>
         /// Gets the server's internal configuration.
         /// </summary>

@@ -25,7 +25,7 @@ namespace Imgeneus.Network.Server.Internal
         }
 
         /// <inheritdoc />
-        protected override void SendPacket(PacketData packetData)
+        public override void SendPacket(PacketData packetData)
         {
             if (this.WritePool.TryPop(out SocketAsyncEventArgs writeSocket))
             {

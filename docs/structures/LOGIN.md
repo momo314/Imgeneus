@@ -3,11 +3,20 @@
 ### World details
 | Name | Data type | Description |
 | ----------- | ------------ | ----------- |
-| World ID | ushort | The connected `Imgeneus.World` unique id. |
-| World Status | ushort | The `Imgeneus.World` current status (Close, Normal, Full, etc.). |
+| World ID | byte | The connected `Imgeneus.World` unique id. |
+| World Status | byte | The `Imgeneus.World` current status (Close, Normal, Full, etc.). |
 | World population | ushort | The number of people connected. |
 | World Capacity | ushort | The number of maximum people connected allowed. |
 | World Name | byte[32] | The `Imgeneus.World` Server name. |
+
+### WorldStatus
+| Index | Name |
+| ----------- | ------------ |
+| 0 | Success |
+| -1 | Try again later |
+| -2 | Can't connect |
+| -3 | Version doesnt match |
+| -4 | Server saturated |
 
 ### Login result
 | Index | Name |

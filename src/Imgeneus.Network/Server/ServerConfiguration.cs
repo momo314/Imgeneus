@@ -39,12 +39,12 @@
         /// </summary>
         /// <param name="host">The server host ip address.</param>
         /// <param name="port">The server listening port.</param>
-        public ServerConfiguration(string host, int port)
+        public ServerConfiguration(string host, int port, int maxNumberOfConnections)
         {
             this.Host = host;
             this.Port = port;
             this.Backlog = defaultBacklog;
-            this.MaximumNumberOfConnections = defaultMaxNumberOfConnections;
+            this.MaximumNumberOfConnections = maxNumberOfConnections;
             this.ClientBufferSize = defaultClientBufferSize;
         }
 

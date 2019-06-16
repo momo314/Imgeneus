@@ -37,7 +37,7 @@ namespace Imgeneus.Network.Common
         /// Adds a new packet to the sender queue.
         /// </summary>
         /// <param name="packet"></param>
-        public void AddPAcketToQueue(PacketData packet) => this.sendingQueue.Add(packet);
+        public void AddPacketToQueue(PacketData packet) => this.sendingQueue.Add(packet);
 
         /// <summary>
         /// Process sending queue.
@@ -69,7 +69,7 @@ namespace Imgeneus.Network.Common
         /// Sends a packet to a connetion.
         /// </summary>
         /// <param name="packetData"></param>
-        protected abstract void SendPacket(PacketData packetData);
+        public abstract void SendPacket(PacketData packetData);
 
         /// <summary>
         /// Completes a send operation.

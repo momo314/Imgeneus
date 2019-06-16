@@ -64,6 +64,6 @@
 | World ID | byte | The connected `Imgeneus.World` unique id. |
 | Client Version | int | The client current build version. |
 
-### LOGIN_TERMINATE (0x010B)
+### LOGIN_TERMINATE (0x0107)
 
 This is an empty packet, used for terminate the client connection.

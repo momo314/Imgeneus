@@ -2,6 +2,15 @@
 {
     public sealed class WorldConfiguration : BaseConfiguration
     {
+        private readonly int defaultPort = 30810;
+        private readonly string defaultName = "Imgeneus";
+        private readonly int defaultMaxNumberOfConnections = 1000;
+
+        /// <summary>
+        /// Gets the maximum number of connections allowed on the server.
+        /// </summary>
+        public int MaximumNumberOfConnections { get; set; }
+
         /// <summary>
         /// Gets or sets the world's id.
         /// </summary>
@@ -19,8 +28,9 @@
 
         public WorldConfiguration()
         {
-            this.Port = 30810;
-            this.Name = "Ingeneus";
+            this.Port = defaultPort;
+            this.Name = defaultName;
+            this.MaximumNumberOfConnections = defaultMaxNumberOfConnections;
             InterServerConfiguration = new InterServerConfiguration();
         }
     }
