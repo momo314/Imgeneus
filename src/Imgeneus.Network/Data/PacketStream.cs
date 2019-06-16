@@ -62,7 +62,7 @@ namespace Imgeneus.Network.Data
 
             return ReadMethods.TryGetValue(typeof(T), out Func<BinaryReader, object> method)
                 ? (T)method.Invoke(this.reader)
-                : default(T);
+                : default;
         }
 
         /// <inheritdoc />
@@ -144,16 +144,7 @@ namespace Imgeneus.Network.Data
             { typeof(float), (writer, value) => writer.Write((float)value) },
             { typeof(double), (writer, value) => writer.Write((double)value) },
             { typeof(decimal), (writer, value) => writer.Write((decimal)value) },
-            { typeof(byte[]),
-                (writer, value) =>
-                {
-                    writer.Write(((byte[])value).Length);
-                    if (((byte[])value).Length > 0)
-                    {
-                        writer.Write((byte[])value);
-                    }    
-                }
-            },
+            { typeof(byte[]), (writer, value) => writer.Write((byte[])value)},
             { typeof(string),
                 (writer, value) =>
                 {

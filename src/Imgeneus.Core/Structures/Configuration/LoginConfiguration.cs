@@ -14,10 +14,16 @@
         /// </summary>
         public string EncryptionKey { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Inter-Server configuration
+        /// </summary>
+        public InterServerConfiguration InterServerConfiguration { get; set; }
+
         public LoginConfiguration()
         {
             this.Port = 30800;
             this.EncryptionKey = "Shaiya";
+            InterServerConfiguration = new InterServerConfiguration();
         }
     }
 }

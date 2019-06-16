@@ -24,6 +24,7 @@ namespace Imgeneus.Network.Server
             this.RemoteEndPoint = acceptedSocket.RemoteEndPoint.ToString();
         }
 
+        /// <inheritdoc />
         public void Disconnect()
         {
             this.Dispose();

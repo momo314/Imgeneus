@@ -2,9 +2,6 @@
 {
     public sealed class WorldConfiguration : BaseConfiguration
     {
-        private readonly int defaultPort = 30810;
-        private readonly string defaultName = "Imgeneus";
-
         /// <summary>
         /// Gets or sets the world's id.
         /// </summary>
@@ -15,10 +12,16 @@
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Inter-Server configuration
+        /// </summary>
+        public InterServerConfiguration InterServerConfiguration { get; set; }
+
         public WorldConfiguration()
         {
-            this.Port = defaultPort;
-            this.Name = defaultName;
+            this.Port = 30810;
+            this.Name = "Ingeneus";
+            InterServerConfiguration = new InterServerConfiguration();
         }
     }
 }
