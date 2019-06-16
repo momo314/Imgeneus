@@ -84,6 +84,29 @@ namespace Imgeneus.Network.Data
         }
 
         /// <inheritdoc />
+        public string ReadString(int size)
+        {
+            if (this.State != PacketStateType.Read)
+            {
+                throw new InvalidOperationException("Packet is in write-only mode.");
+            }
+
+            if (size == 0)
+            {
+                return string.Empty;
+            }
+
+            var value = Encoding.Default.GetString(this.reader.ReadBytes(size));
+
+            if (value.IndexOf('\0') < 0)
+            {
+                return value;
+            }
+
+            return value.Substring(0, value.IndexOf('\0'));
+        }
+
+        /// <inheritdoc />
         public void Write<T>(T value)
         {
             if (this.State != PacketStateType.Write)
@@ -148,7 +171,6 @@ namespace Imgeneus.Network.Data
             { typeof(string),
                 (writer, value) =>
                 {
-                    writer.Write(value.ToString().Length);
                     if (value.ToString().Length > 0)
                     {
                         writer.Write(Encoding.UTF8.GetBytes(value.ToString() + '\0'));

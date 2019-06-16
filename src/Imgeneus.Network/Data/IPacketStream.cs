@@ -56,6 +56,13 @@ namespace Imgeneus.Network.Data
         T[] Read<T>(int count);
 
         /// <summary>
+        /// Reads a string from the packet.
+        /// </summary>
+        /// <param name="amount">The size of the string.</param>
+        /// <returns></returns>
+        string ReadString(int size);
+
+        /// <summary>
         /// Writes a T value in the packet stream.
         /// </summary>
         /// <typeparam name="T">Type of the value.</typeparam>

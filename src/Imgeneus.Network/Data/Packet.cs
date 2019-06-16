@@ -15,6 +15,8 @@ namespace Imgeneus.Network.Data
         {
             // The packet size
             this.Write<ushort>(0);
+
+            // The packet type
             this.Write<ushort>(opcode);
             this.PacketType = (PacketType)opcode;
         }

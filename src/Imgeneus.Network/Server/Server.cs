@@ -44,8 +44,8 @@ namespace Imgeneus.Network.Server
         /// </summary>
         /// <param name="host">The server host.</param>
         /// <param name="port">The server listening port.</param>
-        public Server(string host, int port)
-            : this(new ServerConfiguration(host, port))
+        public Server(string host, int port, int maxNumberOfConnections)
+            : this(new ServerConfiguration(host, port, maxNumberOfConnections))
         {
 
         }
@@ -121,7 +121,7 @@ namespace Imgeneus.Network.Server
 
         /// <inheritdoc />
         public void SendPacketTo(IServerClient client, byte[] packetData) 
-            => this.sender.AddPAcketToQueue(new PacketData(client, packetData));
+            => this.sender.AddPacketToQueue(new PacketData(client, packetData));
 
         /// <inheritdoc />
         public void SendPacketTo(IEnumerable<IServerClient> clients, byte[] packetData)
