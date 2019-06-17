@@ -24,6 +24,11 @@ namespace Imgeneus.Database
         public IRepository<DbCharacter> Charaters { get; set; }
 
         /// <summary>
+        /// Gets the characters.
+        /// </summary>
+        public IRepository<DbCharacterItems> CharacterItems { get; set; }
+
+        /// <summary>
         /// Complete the pending database operation.
         /// </summary>
         void Complete();
