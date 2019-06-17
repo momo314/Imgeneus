@@ -10,7 +10,7 @@ namespace Imgeneus.Login
         /// Gets a list of all connected worlds.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<WorldServerInfo> GetConnectedWolrds();
+        IEnumerable<WorldServerInfo> GetConnectedWorlds();
 
         /// <summary>
         /// Gets a connected client by his username.
