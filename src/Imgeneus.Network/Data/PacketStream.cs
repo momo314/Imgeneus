@@ -121,6 +121,28 @@ namespace Imgeneus.Network.Data
         }
 
         /// <inheritdoc />
+        public void WriteString(string value, int count)
+        {
+            if (this.State != PacketStateType.Write)
+            {
+                throw new InvalidOperationException("Packet is in read-only mode.");
+            }
+
+            if (value.Length > count)
+            {
+                throw new InvalidOperationException("The string is too big");
+            }
+
+            byte[] buffer = new byte[count];
+
+            byte[] stuff = Encoding.UTF8.GetBytes(value);
+
+            System.Buffer.BlockCopy(stuff, 0, buffer, 0, value.Length);
+
+            this.Write<byte[]>(buffer);
+        }
+
+        /// <inheritdoc />
         public void Skip(int byteCount) => this.Position += byteCount;
 
         /// <summary>

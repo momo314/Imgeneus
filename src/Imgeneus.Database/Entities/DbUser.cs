@@ -59,6 +59,12 @@ namespace Imgeneus.Database.Entities
         public ICollection<DbCharacter> Characters { get; set; }
 
         /// <summary>
+        /// Gets or sets a flag that indicates if the user is deleted.
+        /// </summary>
+        [DefaultValue(false)]
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
         /// Creates a new <see cref="DbUser"/> instance.
         /// </summary>
         public DbUser()

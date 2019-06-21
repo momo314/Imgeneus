@@ -18,6 +18,11 @@ namespace Imgeneus.Network.Client
         bool IsRunning { get; }
 
         /// <summary>
+        /// Gets the <see cref="IClient"/> configuration.
+        /// </summary>
+        ClientConfiguration ClientConfiguration { get; }
+
+        /// <summary>
         /// Connects to a remote server.
         /// </summary>
         void Connect();
