@@ -1,6 +1,11 @@
-﻿using Imgeneus.Network;
+﻿using Imgeneus.Core.DependencyInjection;
+using Imgeneus.Database;
+using Imgeneus.Database.Entities;
+using Imgeneus.Login.Packets;
+using Imgeneus.Network;
 using Imgeneus.Network.Data;
 using Imgeneus.Network.Packets;
+using Imgeneus.Network.Packets.Login;
 using System;
 
 namespace Imgeneus.Login
@@ -16,7 +21,43 @@ namespace Imgeneus.Login
         [PacketHandler(PacketType.LOGIN_REQUEST)]
         public static void OnLoginRequest(LoginClient client, IPacketStream packet)
         {
-            throw new NotImplementedException();
+            if (packet.Length != 52)
+            {
+                return;
+            }
+
+            string username = packet.ReadString(19);
+
+            // Skip an unknow param
+            packet.Skip(13);
+
+            string password = packet.ReadString(16);
+
+            var result = Authentication(username, password);
+
+            if (result != AuthenticationResult.SUCCESS)
+            {
+                LoginPacketFactory.AuthenticationFailed(client, result);
+                return;
+            }
+            var loginServer = DependencyContainer.Instance.Resolve<ILoginServer>();
+
+            using var database = DependencyContainer.Instance.Resolve<IDatabase>();
+            DbUser dbUser = database.Users.Get(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+            if (loginServer.IsClientConnected(dbUser.Id))
+            {
+                client.Disconnect();
+                return;
+            }
+
+            dbUser.LastConnectionTime = DateTime.Now;
+            database.Users.Update(dbUser);
+            database.Complete();
+
+            client.SetClientUserID(dbUser.Id);
+
+            LoginPacketFactory.AuthenticationFailed(client, result, dbUser);
         }
 
         [PacketHandler(PacketType.SELECT_SERVER)]
@@ -31,6 +72,30 @@ namespace Imgeneus.Login
         {
             throw new NotImplementedException();
             // TODO: Disconnect client from Internal-Server and World Server
+        }
+
+        public static AuthenticationResult Authentication(string username, string password)
+        {
+            using var database = DependencyContainer.Instance.Resolve<IDatabase>();
+
+            DbUser dbUser = database.Users.Get(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+            if (dbUser == null)
+            {
+                return AuthenticationResult.ACCOUNT_DONT_EXIST;
+            }
+
+            if (dbUser.IsDeleted)
+            {
+                return AuthenticationResult.ACCOUNT_IN_DELETE_PROCESS_1;
+            }
+
+            if (!dbUser.Password.Equals(password))
+            {
+                return AuthenticationResult.INVALID_PASSWORD;
+            }
+
+            return (AuthenticationResult)dbUser.Status;
         }
     }
 }

@@ -27,7 +27,7 @@
 | ----------- | ------------ | ----------- |
 | Login result | byte | The [Login Request Result](https://github.com/KSExtrez/Imgeneus/blob/master/docs/structures/LOGIN.md#login-result). |
 | User id | int | The user unique id. |
-| User status | byte | The user current status (GM, Banned, etc.). |
+| User Authority | byte | The user current Authority |
 | Identity Keys | byte[16] | The connection unique id. |
 
 #### Client -> Server

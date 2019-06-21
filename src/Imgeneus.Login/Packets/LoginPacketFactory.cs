@@ -1,8 +1,7 @@
-﻿using Imgeneus.Network.Data;
-using Imgeneus.Network.InternalServer;
+﻿using Imgeneus.Database.Entities;
+using Imgeneus.Network.Data;
 using Imgeneus.Network.Packets;
-using System.Collections.Generic;
-using System.Linq;
+using Imgeneus.Network.Packets.Login;
 using System.Security.Cryptography;
 
 namespace Imgeneus.Login.Packets
@@ -24,6 +23,28 @@ namespace Imgeneus.Login.Packets
 
             client.SendPacket(packet);
 
+        }
+
+        public static void AuthenticationFailed(LoginClient client, AuthenticationResult result)
+        {
+            using var packet = new Packet(PacketType.LOGIN_REQUEST);
+
+            packet.Write<byte>((byte)result);
+            packet.Write<byte[]>(new byte[21]);
+
+            client.SendPacket(packet);
+        }
+
+        public static void AuthenticationFailed(LoginClient client, AuthenticationResult result, DbUser user)
+        {
+            using var packet = new Packet(PacketType.LOGIN_REQUEST);
+
+            packet.Write<byte>((byte)result);
+            packet.Write<int>(user.Id);
+            packet.Write<byte>(user.Authority);
+            packet.Write<byte[]>(client.Id.ToByteArray());
+
+            client.SendPacket(packet);
         }
     }
 }

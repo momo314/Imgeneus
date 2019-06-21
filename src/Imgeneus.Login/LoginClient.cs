@@ -40,7 +40,7 @@ namespace Imgeneus.Login
         /// <param name="userID">The client user id.</param>
         public void SetClientUserID(int userID)
         {
-            if (userID != 0)
+            if (this.UserID != 0)
             {
                 throw new InvalidOperationException("Client user ID already set.");
             }
