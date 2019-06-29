@@ -19,7 +19,7 @@ In this documentation, you will find every Shaiya packet structure.
 | [LOGIN_REQUEST](/docs/packets/LOGIN.md#login_request-0xa102) | `0xA102` | Request login to the server. |
 | [SERVER_LIST](/docs/packets/LOGIN.md#server_list-0xa201) | `0xA201` | Send the list of available servers to the client. |
 | [SELECT_SERVER](/docs/packets/LOGIN.md#select_server-0xa202) | `0xA202` | Send an error message to the client. |
-| [LOGIN_TERMINATE](/docs/packets/LOGIN.md#Login_terminate-0x010b) | `0x010B` | Finish the login request. |
+| [LOGIN_TERMINATE](/docs/packets/LOGIN.md#Login_terminate-0x0107) | `0x0107` | Finish the login request. |
 
 ### Game
 
