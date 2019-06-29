@@ -1,11 +1,12 @@
-﻿using Imgeneus.Network.Data;
+﻿using Imgeneus.Network.Common;
+using Imgeneus.Network.Data;
 
 namespace Imgeneus.Network.Client
 {
     /// <summary>
     /// Provides a mechanism for creating managed TCP clients.
     /// </summary>
-    public interface IClient
+    public interface IClient : IConnection
     {
         /// <summary>
         /// Gets the <see cref="IClient"/> connected state.

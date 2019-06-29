@@ -1,76 +1,176 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Imgeneus.Network.Client.Internal;
+using Imgeneus.Network.Common;
+using Imgeneus.Network.Data;
+using System;
 using System.Net.Sockets;
-using System.Text;
 
 namespace Imgeneus.Network.Client
 {
     /// <summary>
     /// Provides a mechanism for creating managed TCP clients.
     /// </summary>
-    public class Client
+    public abstract class Client : Connection, IClient
     {
-        private readonly Socket socket;
+        private readonly ClientConnector connector;
+        private ClientReceiver receiver;
+        private ClientSender sender;
 
-        /// <summary>
-        /// Gets host IP address.
-        /// </summary>
-        public string IPAddress { get; }
+        /// <inheritdoc />
+        public bool IsConnected => this.Socket.Connected;
 
-        /// <summary>
-        /// Gets the host port.
-        /// </summary>
-        public int Port { get; }
+        /// <inheritdoc />
+        public bool IsRunning { get; private set; }
+
+        /// <inheritdoc />
+        public ClientConfiguration ClientConfiguration { get; protected set; }
 
         /// <summary>
         /// Creates a new <see cref="Client"/> instance.
         /// </summary>
-        public Client()
+        /// <param name="socketConnection"></param>
+        public Client() 
         {
-            this.IPAddress = "127.0.0.1";
-            this.Port = 30800;
-            this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            this.connector = new ClientConnector(this);
         }
 
-        /// <summary>
-        /// Connects to a remote host.
-        /// </summary>
+        /// <inheritdoc />
         public void Connect()
         {
-            // Inform the user that the client is being initialised
-            Console.WriteLine("initialising client...");
-
-            this.socket.Connect(IPAddress, Port);
-
-            if (socket.Connected)
+            if (this.IsRunning)
             {
-                // Inform the user that the client is connected to a servers
-                Console.WriteLine($"Client Connected to {socket.RemoteEndPoint}");
+                throw new InvalidOperationException("Client is already running.");
+            }
 
-                byte[] buffer = new byte[50];
+            if (this.IsConnected)
+            {
+                throw new InvalidOperationException("Client is already connected to remote host.");
+            }
 
-                // Receive a packet
-                socket.Receive(buffer, 50, SocketFlags.None);
+            if (this.ClientConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(this.ClientConfiguration), "Undefined Client configuration.");
+            }   
 
-                // Print the receive packet
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(Encoding.UTF8.GetString(buffer));
-
-                // Send a packet
-                socket.Send(Encoding.UTF8.GetBytes("Hello from client"));
+            if (this.ClientConfiguration.Port <= 0)
+            {
+                throw new ArgumentException($"Invalid port number '{this.ClientConfiguration.Port}' in configuration.", nameof(this.ClientConfiguration.Port));
 
             }
 
+            if (NetworkHelper.BuildIPAddress(this.ClientConfiguration.Host) == null)
+            {
+                throw new ArgumentException($"Invalid host address '{this.ClientConfiguration.Host}' in configuration", nameof(this.ClientConfiguration.Host));
+            }
+                
+
+            if (this.ClientConfiguration.BufferSize <= 0)
+            {
+                throw new ArgumentException($"Invalid buffer size '{this.ClientConfiguration.BufferSize}' in configuration.", nameof(this.ClientConfiguration.BufferSize));
+            }
+
+            this.sender = new ClientSender(this.CreateSocketEventArgs(null));
+            this.receiver = new ClientReceiver(this);
+            SocketAsyncEventArgs socketConnectEventArgs = this.CreateSocketEventArgs(null);
+            socketConnectEventArgs.RemoteEndPoint = NetworkHelper.CreateIPEndPoint(this.ClientConfiguration.Host, this.ClientConfiguration.Port);
+
+            SocketError errorCode = this.connector.Connect(socketConnectEventArgs);
+
+            if (!this.IsConnected && errorCode != SocketError.Success)
+            {
+                this.OnSocketError(errorCode);
+                return;
+            }
+
+            this.IsRunning = true;
+            this.sender.Start();
+        }
+
+        /// <inheritdoc />
+        public void Disconnect()
+        {
+            this.IsRunning = false;
+            this.Socket.Disconnect(true);
+            this.sender.Stop();
+        }
+
+        /// <inheritdoc />
+        public abstract void HandlePacket(IPacketStream packet);
+
+        /// <inheritdoc />
+        public void SendPacket(IPacketStream packet) =>this.sender.AddPacketToQueue(new PacketData(this, packet.Buffer));
+        /// <summary>
+        /// Triggered when the client is connected to the remote end point.
+        /// </summary>
+        protected abstract void OnConnected();
+
+        /// <summary>
+        /// Triggered when the client is disconnected from the remote end point.
+        /// </summary>
+        protected abstract void OnDisconnected();
+
+        /// <summary>
+        /// Triggered when a error on the socket happend
+        /// </summary>
+        /// <param name="socketError"></param>
+        protected abstract void OnSocketError(SocketError socketError);
+
+        /// <summary>
+        /// Creates a new <see cref="SocketAsyncEventArgs"/> for a <see cref="Client"/>.
+        /// </summary>
+        /// <param name="bufferSize">Buffer size</param>
+        /// <returns></returns>
+        private SocketAsyncEventArgs CreateSocketEventArgs(int? bufferSize)
+        {
+            var socketEvent = new SocketAsyncEventArgs()
+            {
+                UserToken = this
+            };
+
+            socketEvent.Completed += this.OnSocketOperationCompleted;
+            if (bufferSize.HasValue)
+            {
+                socketEvent.SetBuffer(new byte[bufferSize.Value], 0, bufferSize.Value);
+            }
+
+            return socketEvent;
         }
 
         /// <summary>
-        /// Disconnect the current socket.
+        /// Method called when a <see cref="SocketAsyncEventArgs"/> completes an async operation.
         /// </summary>
-        public void Disconnect()
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnSocketOperationCompleted(object sender, SocketAsyncEventArgs e)
         {
-            this.socket.Disconnect(false);
-            this.socket.Close();
-            this.socket.Dispose();
+            try
+            {
+                switch (e.LastOperation)
+                {
+                    case SocketAsyncOperation.Connect:
+                        this.OnConnected();
+                        this.connector.ReleaseConnectorLock();
+                        break;
+                    case SocketAsyncOperation.Receive:
+                        this.receiver.Receive(e);
+                        break;
+                    case SocketAsyncOperation.Send:
+                        this.sender.SendOperationCompleted(e);
+                        break;
+                    default: throw new InvalidOperationException("Unexpected SocketAsyncOperation.");
+                }
+            }
+            catch
+            {
+                // TODO: catch exception and do something with it.
+            }
+        }
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            this.sender.Dispose();
+            this.connector.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

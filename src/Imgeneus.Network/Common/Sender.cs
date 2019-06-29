@@ -12,6 +12,7 @@ namespace Imgeneus.Network.Common
         private readonly BlockingCollection<PacketData> sendingQueue;
         private readonly CancellationTokenSource cancellationTokenSource;
         private readonly CancellationToken cancellationToken;
+        protected readonly AutoResetEvent autoSendEvent;
 
         /// <summary>
         /// Creates a new <see cref="Sender"/> instance.
@@ -21,6 +22,7 @@ namespace Imgeneus.Network.Common
             this.sendingQueue = new BlockingCollection<PacketData>();
             this.cancellationTokenSource = new CancellationTokenSource();
             this.cancellationToken = this.cancellationTokenSource.Token;
+            this.autoSendEvent = new AutoResetEvent(false);
         }
 
         /// <summary>
@@ -89,6 +91,8 @@ namespace Imgeneus.Network.Common
                 {
                     this.Stop();
                     this.sendingQueue.Dispose();
+                    this.cancellationTokenSource.Dispose();
+                    this.autoSendEvent.Dispose();
                 }
 
                 this.disposedValue = true;

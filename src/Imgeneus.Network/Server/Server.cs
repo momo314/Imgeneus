@@ -55,7 +55,6 @@ namespace Imgeneus.Network.Server
         /// </summary>
         /// <param name="configuration">The <see cref="Server.ServerConfiguration"/>.</param>
         public Server(ServerConfiguration configuration)
-            : base(new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
         {
             this.ServerConfiguration = configuration;
             this.clients = new ConcurrentDictionary<Guid, T>();

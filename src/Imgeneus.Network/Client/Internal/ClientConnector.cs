@@ -1,9 +1,10 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 using System.Threading;
 
 namespace Imgeneus.Network.Client.Internal
 {
-    internal sealed class ClientConnector
+    internal sealed class ClientConnector : IDisposable
     {
         private readonly Client client;
         private readonly AutoResetEvent autoConnectEvent;
@@ -43,7 +44,7 @@ namespace Imgeneus.Network.Client.Internal
                         error = this.InternalConnect(connectSocketEvent);
                     }
                 }
-                else if (this.client.ClientConfiguration.RetryOptions == ClientRetryOptions.Limited)
+                else if (this.client.ClientConfiguration.RetryOptions == ClientRetryOptions.Onetime)
                 {
                     error = this.InternalConnect(connectSocketEvent);
                 }
@@ -71,5 +72,10 @@ namespace Imgeneus.Network.Client.Internal
         /// Release locks on connector.
         /// </summary>
         public void ReleaseConnectorLock() => this.autoConnectEvent.Set();
+
+        public void Dispose()
+        {
+            this.autoConnectEvent.Dispose();
+        }
     }
 }

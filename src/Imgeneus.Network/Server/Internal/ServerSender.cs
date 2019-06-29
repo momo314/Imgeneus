@@ -2,13 +2,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Net.Sockets;
-using System.Threading;
 
 namespace Imgeneus.Network.Server.Internal
 {
     internal sealed class ServerSender : Sender, IDisposable
     {
-        private readonly AutoResetEvent autoSendEvent;
 
         /// <summary>
         /// Gets the sender <see cref="SocketAsyncEventArgs"/> pool.
@@ -21,7 +19,6 @@ namespace Imgeneus.Network.Server.Internal
         public ServerSender()
         {
             this.WritePool = new ConcurrentStack<SocketAsyncEventArgs>();
-            this.autoSendEvent = new AutoResetEvent(false);
         }
 
         /// <inheritdoc />
@@ -54,8 +51,6 @@ namespace Imgeneus.Network.Server.Internal
         /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
-            this.autoSendEvent.Dispose();
-
             foreach (var socket in WritePool)
             {
                 socket.Dispose();

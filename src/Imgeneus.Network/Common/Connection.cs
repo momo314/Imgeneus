@@ -27,6 +27,14 @@ namespace Imgeneus.Network.Common
             this.Id = Guid.NewGuid();
             this.Socket = socketConnection;
         }
+        /// <summary>
+        /// Creates a new <see cref="Connection"/>.
+        /// </summary>
+        protected Connection()
+        {
+            this.Id = Guid.NewGuid();
+            this.Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        }
 
         /// <summary>
         /// Dipose the <see cref="Connection"/> resources.

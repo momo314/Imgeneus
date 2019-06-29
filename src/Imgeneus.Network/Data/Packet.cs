@@ -11,14 +11,14 @@ namespace Imgeneus.Network.Data
         /// <summary>
         /// Creates a new <see cref="Packet"/> in write-only mode.
         /// </summary>
-        public Packet(PacketType opcode)
+        public Packet(PacketType packetType)
         {
             // The packet size
             this.Write<ushort>(0);
 
             // The packet type
-            this.Write<ushort>((ushort)opcode);
-            this.PacketType = (PacketType)opcode;
+            this.Write<ushort>((ushort)packetType);
+            this.PacketType = packetType;
         }
 
         /// <summary>
