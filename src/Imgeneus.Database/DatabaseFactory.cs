@@ -1,8 +1,6 @@
-﻿using Imgeneus.Core.Helpers;
-using Imgeneus.Database.Context;
+﻿using Imgeneus.Database.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System;
 
 namespace Imgeneus.Database
 {
@@ -17,7 +15,7 @@ namespace Imgeneus.Database
             return new DatabaseContext(optionsBuilder.Options);
         }
 
-        public IDatabase GetDatabase()
+        public static IDatabase GetDatabase()
         {
             DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder();
             optionsBuilder.ConfigureCorrectDatabase();

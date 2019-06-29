@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace Imgeneus.Login
 {
@@ -19,9 +18,7 @@ namespace Imgeneus.Login
         /// <summary>
         /// Gets the internal server instance.
         /// </summary>
-        public ISServer InterServer { get; private set; }
-
-        public static RSACryptoServiceProvider rsa;
+        public ISServer InterServer { get; }
 
         /// <summary>
         /// Gets the list of the connected worlds.

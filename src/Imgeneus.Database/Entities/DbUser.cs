@@ -15,7 +15,7 @@ namespace Imgeneus.Database.Entities
         [Required]
         [MaxLength(19)]
         public string Username { get; set; }
-
+                            
         /// <summary>
         /// Gets or sets the user's password.
         /// </summary>
@@ -39,7 +39,13 @@ namespace Imgeneus.Database.Entities
         /// <summary>
         /// Gets or sets the user's current status.
         /// </summary>
+        [DefaultValue(0)]
         public byte Authority { get; set; }
+
+        /// <summary>
+        /// Gets or sets the users's current points.
+        /// </summary>
+        public int Points { get; set; }
 
         /// <summary>
         /// Gets the user's creation time.

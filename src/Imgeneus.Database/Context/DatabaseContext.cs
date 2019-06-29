@@ -35,7 +35,7 @@ namespace Imgeneus.Database.Context
         /// <summary>
         /// Migrates the database schema.
         /// </summary>
-        public void Migrate() => Database.Migrate();
+        public void Migrate() => this.Database.Migrate();
 
         /// <summary>
         /// Check if the database exists.

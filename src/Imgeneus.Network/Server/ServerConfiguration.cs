@@ -53,6 +53,20 @@
         /// </summary>
         /// <param name="host">The server host ip address.</param>
         /// <param name="port">The server listening port.</param>
+        public ServerConfiguration(string host, int port)
+        {
+            this.Host = host;
+            this.Port = port;
+            this.Backlog = defaultBacklog;
+            this.MaximumNumberOfConnections = defaultMaxNumberOfConnections;
+            this.ClientBufferSize = defaultClientBufferSize;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ServerConfiguration"/> instance.
+        /// </summary>
+        /// <param name="host">The server host ip address.</param>
+        /// <param name="port">The server listening port.</param>
         /// <param name="backlog">The maximum of pending connections.</param>
         /// <param name="maximumNumberOfConnections">The maximum number of connections allowed.</param>
         /// <param name="clientBufferSize">The handle client buffer size.</param>
