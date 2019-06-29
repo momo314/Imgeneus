@@ -66,8 +66,8 @@ namespace Imgeneus.Login
         {
             if (InterServer != null)
             {
-                InterServer.Stop();
-                InterServer.Dispose();
+                this.InterServer.Stop();
+                this.InterServer.Dispose();
             }
 
             base.Dispose(disposing);

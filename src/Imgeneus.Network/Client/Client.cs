@@ -28,7 +28,7 @@ namespace Imgeneus.Network.Client
         /// Creates a new <see cref="Client"/> instance.
         /// </summary>
         /// <param name="socketConnection"></param>
-        public Client() 
+        protected Client() 
         {
             this.connector = new ClientConnector(this);
         }
@@ -126,7 +126,7 @@ namespace Imgeneus.Network.Client
                 UserToken = this
             };
 
-            socketEvent.Completed += this.OnSocketOperationCompleted;
+            socketEvent.Completed += this.OnSocketCompleted;
             if (bufferSize.HasValue)
             {
                 socketEvent.SetBuffer(new byte[bufferSize.Value], 0, bufferSize.Value);
@@ -140,7 +140,7 @@ namespace Imgeneus.Network.Client
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnSocketOperationCompleted(object sender, SocketAsyncEventArgs e)
+        internal void OnSocketCompleted(object sender, SocketAsyncEventArgs e)
         {
             try
             {

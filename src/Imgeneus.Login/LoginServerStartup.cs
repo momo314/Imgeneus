@@ -73,7 +73,6 @@ namespace Imgeneus.Login
         /// <inheritdoc />
         public void Dispose()
         {
-            this.server?.Dispose();
             DependencyContainer.Instance.Dispose();
             LogManager.Shutdown();
         }
