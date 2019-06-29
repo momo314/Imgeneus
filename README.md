@@ -15,4 +15,5 @@ We choose [Shaiya](https://shaiya.fandom.com/wiki/Main_Page) because  it is a si
 - Configuration files type:  `JSON`
 - External libraries used:
 	- [Entity Framework Core](https://github.com/aspnet/EntityFrameworkCore)
+	- [NLog](https://github.com/NLog/NLog)
 - Environment: `Visual Studio 2019`
