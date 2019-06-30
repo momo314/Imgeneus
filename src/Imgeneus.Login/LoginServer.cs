@@ -64,7 +64,7 @@ namespace Imgeneus.Login
         /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
-            if (InterServer != null)
+            if (this.InterServer != null)
             {
                 this.InterServer.Stop();
                 this.InterServer.Dispose();

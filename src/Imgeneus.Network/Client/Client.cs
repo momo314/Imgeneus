@@ -121,7 +121,7 @@ namespace Imgeneus.Network.Client
         /// <returns></returns>
         private SocketAsyncEventArgs CreateSocketEventArgs(int? bufferSize)
         {
-            var socketEvent = new SocketAsyncEventArgs()
+            var socketEvent = new SocketAsyncEventArgs
             {
                 UserToken = this
             };

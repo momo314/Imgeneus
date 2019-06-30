@@ -4,12 +4,6 @@
     {
         private readonly int defaultPort = 30800;
         private readonly string defaultEncryptionKey = "Shaiya";
-        private readonly int defaultMaxNumberOfConnections = 1000;
-
-        /// <summary>
-        /// Gets the maximum number of connections allowed on the server.
-        /// </summary>
-        public int MaximumNumberOfConnections { get; set; }
 
         /// <summary>
         /// Gets or sets the client build version
@@ -30,7 +24,6 @@
         {
             this.Port = defaultPort;
             this.EncryptionKey = defaultEncryptionKey;
-            this.MaximumNumberOfConnections = defaultMaxNumberOfConnections;
             InterServerConfiguration = new InterServerConfiguration();
         }
     }

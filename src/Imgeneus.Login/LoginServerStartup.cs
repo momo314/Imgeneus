@@ -17,7 +17,6 @@ namespace Imgeneus.Login
     {
         private const string LoginConfigFile = "config/login.json";
         private const string DatabaseConfigFile = "config/database.json";
-        private ILoginServer server;
 
         /// <inheritdoc />
         public void Configure()
@@ -52,12 +51,11 @@ namespace Imgeneus.Login
         public void Run()
         {
             var logger = DependencyContainer.Instance.Resolve<ILogger<LoginServerStartup>>();
-            this.server = DependencyContainer.Instance.Resolve<ILoginServer>();
+            var server = DependencyContainer.Instance.Resolve<ILoginServer>();
             try
             {
                 logger.LogInformation("Starting LoginServer...");
-
-                this.server.Start();
+                server.Start();
 
                 Console.ReadLine();
             }
