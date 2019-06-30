@@ -21,7 +21,6 @@ namespace Imgeneus.Login.InternalServer
 
         protected override void OnStart()
         {
-            PacketHandler<ISClient>.Initialize();
             logger.LogInformation("ISC server is started and listen on {0}:{1}.",
             this.ServerConfiguration.Host,
             this.ServerConfiguration.Port);

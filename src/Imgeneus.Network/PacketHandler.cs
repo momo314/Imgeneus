@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Imgeneus.Network
 {
-    public static class PacketHandler<T> where T : IServerClient
+    public static class PacketHandler<T>
     {
         private static readonly IDictionary<object, Action<T, IPacketStream>> handlers = new Dictionary<object, Action<T, IPacketStream>>();
 

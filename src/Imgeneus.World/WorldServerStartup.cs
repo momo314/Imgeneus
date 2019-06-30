@@ -3,8 +3,8 @@ using Imgeneus.Core.DependencyInjection;
 using Imgeneus.Core.Helpers;
 using Imgeneus.Core.Structures.Configuration;
 using Imgeneus.Database;
-using Imgeneus.Login.InternalServer;
 using Imgeneus.Network;
+using Imgeneus.World.InternalServer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
@@ -12,29 +12,33 @@ using NLog.Extensions.Logging;
 using System;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
-namespace Imgeneus.Login
+namespace Imgeneus.World
 {
-    public sealed class LoginServerStartup : IProgramStartup
+    public sealed class WorldServerStartup : IProgramStartup
     {
-        private const string LoginConfigFile = "config/login.json";
+        private const string WorldConfigFile = "config/world.json";
         private const string DatabaseConfigFile = "config/database.json";
 
         /// <inheritdoc />
         public void Configure()
         {
-            PacketHandler<LoginClient>.Initialize();
             PacketHandler<ISClient>.Initialize();
+            PacketHandler<WorldClient>.Initialize();
 
             var dbConfig = ConfigurationHelper.Load<DatabaseConfiguration>(DatabaseConfigFile);
             DependencyContainer.Instance
                 .GetServiceCollection()
                 .RegisterDatabaseServices(dbConfig);
 
-            DependencyContainer.Instance.Register<ILoginServer, LoginServer>(ServiceLifetime.Singleton);
+            DependencyContainer.Instance.Register<IWorldServer, WorldServer>(ServiceLifetime.Singleton);
             DependencyContainer.Instance.Configure(services => services.AddLogging(builder =>
             {
                 builder.AddFilter("Microsoft", LogLevel.Warning);
+#if DEBUG
                 builder.SetMinimumLevel(LogLevel.Trace);
+#else
+                builder.SetMinimumLevel(LogLevel.Warning);
+#endif
                 builder.AddNLog(new NLogProviderOptions
                 {
                     CaptureMessageTemplates = true,
@@ -43,8 +47,8 @@ namespace Imgeneus.Login
             }));
             DependencyContainer.Instance.Configure(services =>
             {
-                var loginConfiguration = ConfigurationHelper.Load<LoginConfiguration>(LoginConfigFile);
-                services.AddSingleton(loginConfiguration);
+                var worldConfiguration = ConfigurationHelper.Load<WorldConfiguration>(WorldConfigFile);
+                services.AddSingleton(worldConfiguration);
             });
             DependencyContainer.Instance.BuildServiceProvider();
         }
@@ -52,18 +56,18 @@ namespace Imgeneus.Login
         /// <inheritdoc />
         public void Run()
         {
-            var logger = DependencyContainer.Instance.Resolve<ILogger<LoginServerStartup>>();
-            var server = DependencyContainer.Instance.Resolve<ILoginServer>();
+            var logger = DependencyContainer.Instance.Resolve<ILogger<WorldServerStartup>>();
+            var server = DependencyContainer.Instance.Resolve<IWorldServer>();
+
             try
             {
-                logger.LogInformation("Starting LoginServer...");
+                logger.LogInformation("Starting WorldServer...");
                 server.Start();
-
                 Console.ReadLine();
             }
             catch (Exception e)
             {
-                logger.LogCritical(e, $"An unexpected error occured in LoginServer.");
+                logger.LogCritical(e, $"An unexpected error occured in WorldServer.");
 #if DEBUG
                 Console.ReadLine();
 #endif

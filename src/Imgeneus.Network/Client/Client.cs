@@ -76,7 +76,7 @@ namespace Imgeneus.Network.Client
 
             SocketError errorCode = this.connector.Connect(socketConnectEventArgs);
 
-            if (!this.IsConnected && errorCode != SocketError.Success)
+            if (!this.IsConnected)
             {
                 this.OnError(new InvalidOperationException("No se puede conectar con el servidor."));
                 return;
@@ -113,7 +113,7 @@ namespace Imgeneus.Network.Client
         /// Triggered when a error on the socket happend
         /// </summary>
         /// <param name="socketError"></param>
-        protected abstract void OnError(Exception socketError);
+        protected abstract void OnError(Exception exception);
 
         /// <summary>
         /// Creates a new <see cref="SocketAsyncEventArgs"/> for a <see cref="Client"/>.

@@ -33,6 +33,7 @@ namespace Imgeneus.Login
             this.InterServer = new ISServer(loginConfiguration.InterServerConfiguration);
         }
 
+        /// <inheritdoc />
         protected override void OnStart()
         {
             this.logger.LogTrace("Host: {0}, Port: {1}, MaxNumberOfConnections: {2}",
@@ -41,14 +42,17 @@ namespace Imgeneus.Login
             this.loginConfiguration.MaximumNumberOfConnections);
             this.InterServer.Start();
         }
+
+        /// <inheritdoc />
         protected override void OnClientConnected(LoginClient client)
         {
             LoginPacketFactory.SendLoginHandshake(client);
         }
 
+        /// <inheritdoc />
         protected override void OnError(Exception exception)
         {
-            this.logger.LogInformation($"Socket error: {exception.Message}");
+            this.logger.LogInformation($"Login Server error: {exception.Message}");
         }
 
         /// <inheritdoc />
