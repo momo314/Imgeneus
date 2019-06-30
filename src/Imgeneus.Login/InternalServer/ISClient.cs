@@ -27,7 +27,7 @@ namespace Imgeneus.Login.InternalServer
 
         public override void HandlePacket(IPacketStream packet)
         {
-            if (Socket == null)
+            if (this.Socket == null)
             {
                 this.logger.LogTrace("Skip to handle packet from {0}. Reason: socket is no more connected.", this.RemoteEndPoint);
                 return;

@@ -28,8 +28,9 @@ namespace Imgeneus.Network.Client
         /// Creates a new <see cref="Client"/> instance.
         /// </summary>
         /// <param name="socketConnection"></param>
-        protected Client() 
+        protected Client(ClientConfiguration clientConfiguration) 
         {
+            this.ClientConfiguration = clientConfiguration;
             this.connector = new ClientConnector(this);
         }
 
@@ -77,7 +78,7 @@ namespace Imgeneus.Network.Client
 
             if (!this.IsConnected && errorCode != SocketError.Success)
             {
-                this.OnSocketError(errorCode);
+                this.OnError(new InvalidOperationException("No se puede conectar con el servidor."));
                 return;
             }
 
@@ -112,7 +113,7 @@ namespace Imgeneus.Network.Client
         /// Triggered when a error on the socket happend
         /// </summary>
         /// <param name="socketError"></param>
-        protected abstract void OnSocketError(SocketError socketError);
+        protected abstract void OnError(Exception socketError);
 
         /// <summary>
         /// Creates a new <see cref="SocketAsyncEventArgs"/> for a <see cref="Client"/>.
@@ -159,9 +160,9 @@ namespace Imgeneus.Network.Client
                     default: throw new InvalidOperationException("Unexpected SocketAsyncOperation.");
                 }
             }
-            catch
+            catch(Exception exception)
             {
-                // TODO: catch exception and do something with it.
+                this.OnError(exception);
             }
         }
 

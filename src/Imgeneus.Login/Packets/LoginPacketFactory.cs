@@ -1,8 +1,11 @@
-﻿using Imgeneus.Database.Entities;
+﻿using Imgeneus.Core.DependencyInjection;
+using Imgeneus.Database.Entities;
 using Imgeneus.Network.Data;
 using Imgeneus.Network.Packets;
 using Imgeneus.Network.Packets.Login;
 using System.Security.Cryptography;
+using System.Linq;
+using Imgeneus.Network.InternalServer;
 
 namespace Imgeneus.Login.Packets
 {
@@ -12,7 +15,8 @@ namespace Imgeneus.Login.Packets
         {
             using Packet packet = new Packet(PacketType.LOGIN_HANDSHAKE);
 
-            var rsa = new RSACryptoServiceProvider(1024).ExportParameters(false);
+            using var csp = new RSACryptoServiceProvider(1024);
+            var rsa = csp.ExportParameters(false);
 
             packet.Write<byte>(0);
             packet.Write<byte>((byte)rsa.Exponent.Length);
@@ -22,7 +26,6 @@ namespace Imgeneus.Login.Packets
             packet.Write<byte[]>(rsa.Modulus);
 
             client.SendPacket(packet);
-
         }
 
         public static void AuthenticationFailed(LoginClient client, AuthenticationResult result)
@@ -31,6 +34,26 @@ namespace Imgeneus.Login.Packets
 
             packet.Write<byte>((byte)result);
             packet.Write<byte[]>(new byte[21]);
+
+            client.SendPacket(packet);
+        }
+
+        public static void SendServerList(LoginClient client)
+        {
+            using var packet = new Packet(PacketType.SERVER_LIST);
+            var loginServer = DependencyContainer.Instance.Resolve<ILoginServer>();
+            var worlds = loginServer.GetConnectedWorlds();
+
+            packet.Write<byte>((byte)worlds.Count());
+
+            foreach (var world in worlds)
+            {
+                packet.Write<byte>((byte)world.Id);
+                packet.Write<byte>((byte)world.WorldStatus);
+                packet.Write<ushort>(world.ConnectedUsers);
+                packet.Write<ushort>(world.MaxAllowedUsers);
+                packet.WriteString(world.Name, 32);
+            }
 
             client.SendPacket(packet);
         }
@@ -45,6 +68,7 @@ namespace Imgeneus.Login.Packets
             packet.Write<byte[]>(client.Id.ToByteArray());
 
             client.SendPacket(packet);
+            SendServerList(client);
         }
     }
 }

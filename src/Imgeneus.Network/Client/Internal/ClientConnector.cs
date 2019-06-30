@@ -26,28 +26,25 @@ namespace Imgeneus.Network.Client.Internal
         /// <returns>The socket error code.</returns>
         public SocketError Connect(SocketAsyncEventArgs connectSocketEvent)
         {
-            SocketError error = this.InternalConnect(connectSocketEvent);
+            SocketError error = SocketError.NotConnected;
 
-            if (!this.client.IsConnected)
+            switch (this.client.ClientConfiguration.RetryOptions)
             {
-                if (this.client.ClientConfiguration.RetryOptions == ClientRetryOptions.Infinite)
-                {
-                    while (!this.client.IsConnected)
-                    {
-                        error = this.InternalConnect(connectSocketEvent);
-                    }
-                }
-                else if (this.client.ClientConfiguration.RetryOptions == ClientRetryOptions.Limited)
-                {
+                case ClientRetryOptions.Onetime:
+                    error = this.InternalConnect(connectSocketEvent);
+                    break;
+                case ClientRetryOptions.Limited:
                     for (int i = 0; i < this.client.ClientConfiguration.MaxAttempts && !this.client.IsConnected; i++)
                     {
                         error = this.InternalConnect(connectSocketEvent);
                     }
-                }
-                else if (this.client.ClientConfiguration.RetryOptions == ClientRetryOptions.Onetime)
-                {
-                    error = this.InternalConnect(connectSocketEvent);
-                }
+                    break;
+                case ClientRetryOptions.Infinite:
+                    while (!this.client.IsConnected)
+                    {
+                        error = this.InternalConnect(connectSocketEvent);
+                    }
+                    break;
             }
 
             return error;

@@ -33,7 +33,12 @@ namespace Imgeneus.Login.InternalServer
 
         protected override void OnClientConnected(ISClient client)
         {
-            this.logger.LogTrace("New world server connected from{0}", client.RemoteEndPoint);
+            this.logger.LogTrace("New world server connected from {0}", client.RemoteEndPoint);
+        }
+
+        protected override void OnClientDisconnected(ISClient client)
+        {
+            this.logger.LogTrace("World server disconnected");
         }
 
         protected override void OnError(Exception exception)
