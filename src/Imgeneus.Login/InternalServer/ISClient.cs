@@ -1,12 +1,12 @@
-﻿using System;
-using System.Net.Sockets;
-using Imgeneus.Core.DependencyInjection;
+﻿using Imgeneus.Core.DependencyInjection;
 using Imgeneus.Network;
 using Imgeneus.Network.Data;
 using Imgeneus.Network.InternalServer;
 using Imgeneus.Network.Packets;
 using Imgeneus.Network.Server;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Net.Sockets;
 
 namespace Imgeneus.Login.InternalServer
 {
@@ -19,7 +19,7 @@ namespace Imgeneus.Login.InternalServer
         /// </summary>
         public WorldServerInfo WorldServerInfo { get; private set; }
 
-        public ISClient(IServer server, Socket acceptedSocket) 
+        public ISClient(IServer server, Socket acceptedSocket)
             : base(server, acceptedSocket)
         {
             this.logger = DependencyContainer.Instance.Resolve<ILogger<ISClient>>();

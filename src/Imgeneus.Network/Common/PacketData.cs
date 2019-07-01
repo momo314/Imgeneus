@@ -52,7 +52,7 @@ namespace Imgeneus.Network.Common
         /// <param name="left"></param>
         /// <param name="right"></param>
         /// <returns></returns>
-        public static bool operator == (PacketData left, PacketData right) => Equals(left, right);
+        public static bool operator ==(PacketData left, PacketData right) => Equals(left, right);
 
         /// <summary>
         /// Determines whether the current <see cref="PacketData"/> is not equal to another <see cref="PacketData"/>.
@@ -60,6 +60,6 @@ namespace Imgeneus.Network.Common
         /// <param name="left"></param>
         /// <param name="right"></param>
         /// <returns></returns>
-        public static bool operator != (PacketData left, PacketData right) => !Equals(left, right);
+        public static bool operator !=(PacketData left, PacketData right) => !Equals(left, right);
     }
 }

@@ -66,7 +66,7 @@ namespace Imgeneus.Login
                         this.logger.LogWarning("Received an unimplemented packet {0} from {2}.", packet.PacketType, this.RemoteEndPoint);
                     }
                     else
-                    { 
+                    {
                         this.logger.LogWarning("Received an unknown packet 0x{0} from {1}.", ((ushort)packet.PacketType).ToString("X2"), this.RemoteEndPoint);
                     }
                 }

@@ -15,7 +15,7 @@ namespace Imgeneus.Database.Entities
         [Required]
         [MaxLength(19)]
         public string Username { get; set; }
-                            
+
         /// <summary>
         /// Gets or sets the user's password.
         /// </summary>

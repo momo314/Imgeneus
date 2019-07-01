@@ -45,6 +45,8 @@ namespace Imgeneus.Network.Client.Internal
                         error = this.InternalConnect(connectSocketEvent);
                     }
                     break;
+                default:
+                    break;
             }
 
             return error;

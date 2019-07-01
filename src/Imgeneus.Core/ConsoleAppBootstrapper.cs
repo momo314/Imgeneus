@@ -65,7 +65,7 @@ namespace Imgeneus.Core
             if (this.startup == null)
             {
                 throw new InvalidProgramException("No startup class specified.");
-            } 
+            }
 
             this.startup.Run();
         }

@@ -9,7 +9,7 @@ namespace Imgeneus.Database
     {
         /// <inheritdoc />
         public IRepository<DbUser> Users { get; set; }
-        
+
         /// <inheritdoc />
         public IRepository<DbCharacter> Charaters { get; set; }
 

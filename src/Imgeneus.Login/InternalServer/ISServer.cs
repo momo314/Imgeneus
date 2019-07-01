@@ -1,6 +1,5 @@
 ﻿using Imgeneus.Core.DependencyInjection;
 using Imgeneus.Core.Structures.Configuration;
-using Imgeneus.Network;
 using Imgeneus.Network.InternalServer;
 using Imgeneus.Network.Server;
 using Microsoft.Extensions.Logging;

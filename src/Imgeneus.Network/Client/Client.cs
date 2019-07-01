@@ -28,7 +28,7 @@ namespace Imgeneus.Network.Client
         /// Creates a new <see cref="Client"/> instance.
         /// </summary>
         /// <param name="socketConnection"></param>
-        protected Client(ClientConfiguration clientConfiguration) 
+        protected Client(ClientConfiguration clientConfiguration)
         {
             this.ClientConfiguration = clientConfiguration;
             this.connector = new ClientConnector(this);
@@ -50,7 +50,7 @@ namespace Imgeneus.Network.Client
             if (this.ClientConfiguration == null)
             {
                 throw new ArgumentNullException(nameof(this.ClientConfiguration), "Undefined Client configuration.");
-            }   
+            }
 
             if (this.ClientConfiguration.Port <= 0)
             {
@@ -62,7 +62,7 @@ namespace Imgeneus.Network.Client
             {
                 throw new ArgumentException($"Invalid host address '{this.ClientConfiguration.Host}' in configuration", nameof(this.ClientConfiguration.Host));
             }
-                
+
 
             if (this.ClientConfiguration.BufferSize <= 0)
             {
@@ -74,7 +74,7 @@ namespace Imgeneus.Network.Client
             SocketAsyncEventArgs socketConnectEventArgs = this.CreateSocketEventArgs(null);
             socketConnectEventArgs.RemoteEndPoint = NetworkHelper.CreateIPEndPoint(this.ClientConfiguration.Host, this.ClientConfiguration.Port);
 
-            SocketError errorCode = this.connector.Connect(socketConnectEventArgs);
+            this.connector.Connect(socketConnectEventArgs);
 
             if (!this.IsConnected)
             {
@@ -98,7 +98,7 @@ namespace Imgeneus.Network.Client
         public abstract void HandlePacket(IPacketStream packet);
 
         /// <inheritdoc />
-        public void SendPacket(IPacketStream packet) =>this.sender.AddPacketToQueue(new PacketData(this, packet.Buffer));
+        public void SendPacket(IPacketStream packet) => this.sender.AddPacketToQueue(new PacketData(this, packet.Buffer));
         /// <summary>
         /// Triggered when the client is connected to the remote end point.
         /// </summary>
@@ -160,7 +160,7 @@ namespace Imgeneus.Network.Client
                     default: throw new InvalidOperationException("Unexpected SocketAsyncOperation.");
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 this.OnError(exception);
             }

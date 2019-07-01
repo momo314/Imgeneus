@@ -16,7 +16,7 @@ namespace Imgeneus.World
         /// </summary>
         public ISClient InterClient { get; private set; }
 
-        public WorldServer(ILogger<WorldServer> logger, WorldConfiguration configuration) 
+        public WorldServer(ILogger<WorldServer> logger, WorldConfiguration configuration)
             : base(new ServerConfiguration(configuration.Host, configuration.Port, configuration.MaximumNumberOfConnections))
         {
             this.logger = logger;

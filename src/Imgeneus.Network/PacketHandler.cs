@@ -37,13 +37,13 @@ namespace Imgeneus.Network
         {
             // Gets all public statis methods with PacketHandlerAttribute
             IEnumerable<PacketMethodHandler[]> readHandlers = from type in typeof(T).Assembly.GetTypes()
-                                                          let typeInfo = type.GetTypeInfo()
-                                                          let methodsInfo = typeInfo.GetMethods(BindingFlags.Static | BindingFlags.Public)
-                                                          let handler = (from x in methodsInfo
-                                                                         let attribute = x.GetCustomAttribute<PacketHandlerAttribute>()
-                                                                         where attribute != null
-                                                                         select new PacketMethodHandler(x, attribute)).ToArray()
-                                                          select handler;
+                                                              let typeInfo = type.GetTypeInfo()
+                                                              let methodsInfo = typeInfo.GetMethods(BindingFlags.Static | BindingFlags.Public)
+                                                              let handler = (from x in methodsInfo
+                                                                             let attribute = x.GetCustomAttribute<PacketHandlerAttribute>()
+                                                                             where attribute != null
+                                                                             select new PacketMethodHandler(x, attribute)).ToArray()
+                                                              select handler;
 
             // Save all packet handler in our internal dictionary
             foreach (PacketMethodHandler[] readHandler in readHandlers)

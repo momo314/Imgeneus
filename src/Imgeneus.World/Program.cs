@@ -2,9 +2,9 @@
 
 namespace Imgeneus.World
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             ConsoleAppBootstrapper.CreateApp()
                 .SetConsoleTitle("Rhisis - World Server")

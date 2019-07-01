@@ -102,7 +102,7 @@ namespace Imgeneus.Network.Server
         }
 
         /// <inheritdoc />
-        public IServerClient GetClient(Guid clientId) 
+        public IServerClient GetClient(Guid clientId)
             => this.clients.TryGetValue(clientId, out T client) ? client : default;
 
         /// <inheritdoc />
@@ -119,7 +119,7 @@ namespace Imgeneus.Network.Server
         }
 
         /// <inheritdoc />
-        public void SendPacketTo(IServerClient client, byte[] packetData) 
+        public void SendPacketTo(IServerClient client, byte[] packetData)
             => this.sender.AddPacketToQueue(new PacketData(client, packetData));
 
         /// <inheritdoc />

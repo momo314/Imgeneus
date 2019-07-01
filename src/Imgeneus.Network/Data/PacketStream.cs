@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Imgeneus.Network.Packets;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Imgeneus.Network.Packets;
 
 namespace Imgeneus.Network.Data
 {

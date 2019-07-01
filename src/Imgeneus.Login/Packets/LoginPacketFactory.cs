@@ -3,9 +3,8 @@ using Imgeneus.Database.Entities;
 using Imgeneus.Network.Data;
 using Imgeneus.Network.Packets;
 using Imgeneus.Network.Packets.Login;
-using System.Security.Cryptography;
 using System.Linq;
-using Imgeneus.Network.InternalServer;
+using System.Security.Cryptography;
 
 namespace Imgeneus.Login.Packets
 {
