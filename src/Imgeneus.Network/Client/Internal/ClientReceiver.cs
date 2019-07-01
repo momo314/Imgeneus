@@ -37,7 +37,7 @@ namespace Imgeneus.Network.Client.Internal
                     this.client.HandlePacket(packet);
                 });
 
-                if (!client.Socket.ReceiveAsync(e))
+                if (!this.client.Socket.ReceiveAsync(e))
                 {
                     this.Receive(e);
                 }

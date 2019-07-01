@@ -22,9 +22,9 @@
 
         public LoginConfiguration()
         {
-            this.Port = defaultPort;
-            this.EncryptionKey = defaultEncryptionKey;
-            InterServerConfiguration = new InterServerConfiguration();
+            this.Port = this.defaultPort;
+            this.EncryptionKey = this.defaultEncryptionKey;
+            this.InterServerConfiguration = new InterServerConfiguration();
         }
     }
 }

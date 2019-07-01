@@ -51,7 +51,7 @@ namespace Imgeneus.Login
         /// <inheritdoc />
         public override void HandlePacket(IPacketStream packet)
         {
-            if (Socket == null)
+            if (this.Socket == null)
             {
                 this.logger.LogTrace("Skip to handle packet. Reason: client is no more connected.");
                 return;

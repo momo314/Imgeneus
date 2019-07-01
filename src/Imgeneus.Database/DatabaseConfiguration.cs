@@ -29,6 +29,6 @@
 
         /// <inheritdoc />
         public override string ToString()
-            => $"Host: {Host}, Port: {Port}, Username: {Username}, Password: {Password}, Database: {Database}";
+            => $"Host: {this.Host}, Port: {this.Port}, Username: {this.Username}, Password: {this.Password}, Database: {this.Database}";
     }
 }

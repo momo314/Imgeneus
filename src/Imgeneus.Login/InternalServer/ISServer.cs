@@ -20,7 +20,7 @@ namespace Imgeneus.Login.InternalServer
 
         protected override void OnStart()
         {
-            logger.LogInformation("ISC server is started and listen on {0}:{1}.",
+            this.logger.LogInformation("ISC server is started and listen on {0}:{1}.",
             this.ServerConfiguration.Host,
             this.ServerConfiguration.Port);
             this.logger.LogTrace("Inter-Server -> Host: {0}, Port: {1}, MaxNumberOfConnections: {2}",

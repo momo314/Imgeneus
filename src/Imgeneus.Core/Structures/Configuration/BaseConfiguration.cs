@@ -22,8 +22,8 @@
 
         public BaseConfiguration()
         {
-            this.Host = defaultHost;
-            this.MaximumNumberOfConnections = defaultMaxNumberOfConnections;
+            this.Host = this.defaultHost;
+            this.MaximumNumberOfConnections = this.defaultMaxNumberOfConnections;
         }
 
     }

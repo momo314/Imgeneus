@@ -51,7 +51,7 @@ namespace Imgeneus.Network.Server.Internal
         /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
-            foreach (var socket in WritePool)
+            foreach (var socket in this.WritePool)
             {
                 socket.Dispose();
             }

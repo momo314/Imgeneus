@@ -14,7 +14,7 @@ namespace Imgeneus.World.InternalServer
         public ISClient(WorldConfiguration worldConfiguration)
             : base(new ClientConfiguration(worldConfiguration.InterServerConfiguration.Host, worldConfiguration.InterServerConfiguration.Port))
         {
-            WorldConfiguration = worldConfiguration;
+            this.WorldConfiguration = worldConfiguration;
             this.logger = DependencyContainer.Instance.Resolve<ILogger<ISClient>>();
         }
 

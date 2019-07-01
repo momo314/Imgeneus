@@ -23,7 +23,7 @@ namespace Imgeneus.Login
         /// <summary>
         /// Gets the list of the connected worlds.
         /// </summary>
-        public IEnumerable<WorldServerInfo> ClustersConnected => InterServer.WorldServers;
+        public IEnumerable<WorldServerInfo> ClustersConnected => this.InterServer.WorldServers;
 
         public LoginServer(ILogger<LoginServer> logger, LoginConfiguration loginConfiguration)
             : base(new ServerConfiguration(loginConfiguration.Host, loginConfiguration.Port, loginConfiguration.MaximumNumberOfConnections))

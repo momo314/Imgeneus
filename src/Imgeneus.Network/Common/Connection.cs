@@ -42,7 +42,7 @@ namespace Imgeneus.Network.Common
         /// <param name="disposing">The disposing value.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!this.disposedValue)
             {
                 if (disposing)
                 {
@@ -51,7 +51,7 @@ namespace Imgeneus.Network.Common
 
                 this.Socket.Dispose();
 
-                disposedValue = true;
+                this.disposedValue = true;
             }
         }
 
@@ -61,7 +61,7 @@ namespace Imgeneus.Network.Common
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
         }
     }
 }

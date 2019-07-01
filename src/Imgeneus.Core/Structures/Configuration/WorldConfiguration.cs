@@ -17,9 +17,9 @@
 
         public WorldConfiguration()
         {
-            this.Port = defaultPort;
-            this.Name = defaultName;
-            InterServerConfiguration = new InterServerConfiguration();
+            this.Port = this.defaultPort;
+            this.Name = this.defaultName;
+            this.InterServerConfiguration = new InterServerConfiguration();
         }
     }
 }

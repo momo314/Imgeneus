@@ -102,7 +102,7 @@ namespace Imgeneus.Network.Server.Internal
                     // TODO: dispose managed state (managed objects).
                 }
 
-                foreach (var socket in ReadPool)
+                foreach (var socket in this.ReadPool)
                 {
                     socket.Dispose();
                 }

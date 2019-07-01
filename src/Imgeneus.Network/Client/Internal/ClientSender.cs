@@ -25,16 +25,16 @@ namespace Imgeneus.Network.Client.Internal
         /// <inheritdoc />
         public override void SendPacket(PacketData packetData)
         {
-            SendSocketEventArgs.SetBuffer(packetData.Data, 0, packetData.Data.Length);
-            SendSocketEventArgs.UserToken = packetData.Connection;
+            this.SendSocketEventArgs.SetBuffer(packetData.Data, 0, packetData.Data.Length);
+            this.SendSocketEventArgs.UserToken = packetData.Connection;
 
-            if (packetData.Connection.Socket.SendAsync(SendSocketEventArgs))
+            if (packetData.Connection.Socket.SendAsync(this.SendSocketEventArgs))
             {
                 this.autoSendEvent.WaitOne();
             }
             else
             {
-                this.SendOperationCompleted(SendSocketEventArgs);
+                this.SendOperationCompleted(this.SendSocketEventArgs);
             }
         }
 
