@@ -6,11 +6,6 @@
         private readonly string defaultEncryptionKey = "Shaiya";
 
         /// <summary>
-        /// Gets or sets the client build version
-        /// </summary>
-        public int BuildVersion { get; set; }
-
-        /// <summary>
         /// Gets or sets the password encryption key.
         /// </summary>
         public string EncryptionKey { get; set; }

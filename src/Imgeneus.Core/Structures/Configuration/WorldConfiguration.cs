@@ -11,6 +11,11 @@
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the client build version
+        /// </summary>
+        public int BuildVersion { get; set; }
+
+        /// <summary>
         /// Gets or sets the Inter-Server configuration
         /// </summary>
         public InterServerConfiguration InterServerConfiguration { get; set; }

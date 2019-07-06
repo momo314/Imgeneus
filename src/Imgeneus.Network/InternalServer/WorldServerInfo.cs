@@ -20,6 +20,11 @@ namespace Imgeneus.Network.InternalServer
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the world server build version.
+        /// </summary>
+        public int BuildVersion { get; set; }
+
+        /// <summary>
         /// Gets the maximum number of connected users.
         /// </summary>
         public ushort MaxAllowedUsers { get; set; }
@@ -34,11 +39,12 @@ namespace Imgeneus.Network.InternalServer
         /// </summary>
         public WorldState WorldStatus { get; set; }
 
-        public WorldServerInfo(int id, string host, string name, ushort connectedusers, ushort maxAllowedUsers, WorldState status)
+        public WorldServerInfo(int id, string host, string name, int buildVersion, ushort connectedusers, ushort maxAllowedUsers, WorldState status)
         {
             this.Id = id;
             this.Host = host;
             this.Name = name;
+            this.BuildVersion = buildVersion;
             this.ConnectedUsers = connectedusers;
             this.MaxAllowedUsers = maxAllowedUsers;
             this.WorldStatus = status;
