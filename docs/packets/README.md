@@ -26,3 +26,9 @@ In this documentation, you will find every Shaiya packet structure.
 | Packet Name | Packet Value | Description |
 | ----------- | ------------ | ----------- |
 | [GAME_HANDSHAKE](/docs/packets/GAME.md#game_handshake-0xa301) | `0xA301` | Send user id and session identity keys from the login request. |
+
+### Common Packets
+
+### CLOSE_CONNECTION (0x0107)
+
+This is an empty packet, used for terminate the client connection.

@@ -31,6 +31,7 @@ namespace Imgeneus.World.InternalServer
         protected override void OnConnected()
         {
             this.logger.LogTrace("Inter-Server connected to Login Server");
+            ISPacketFactory.Authenticate(this, WorldConfiguration);
         }
 
         protected override void OnDisconnected()

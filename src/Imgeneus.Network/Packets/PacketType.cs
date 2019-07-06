@@ -8,9 +8,10 @@
         UPDATE_SERVER = 7,
         DISSCONNECT_USER = 8,
 
+        // Common
+        CLOSE_CONNECTION = 0x0107,
 
         // Login Server
-        LOGIN_TERMINATE = 0x0107,
         LOGIN_HANDSHAKE = 0xA101,
         LOGIN_REQUEST = 0xA102,
         SERVER_LIST = 0xA201,

@@ -13,6 +13,12 @@ namespace Imgeneus.Login
         IEnumerable<WorldServerInfo> GetConnectedWorlds();
 
         /// <summary>
+        /// Gets a world by id.
+        /// </summary>
+        /// <returns></returns>
+        WorldServerInfo GetWorldByID(byte id);
+
+        /// <summary>
         /// Gets a connected client by his username.
         /// </summary>
         /// <param name="userID">The user id.</param>

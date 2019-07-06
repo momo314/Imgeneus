@@ -69,5 +69,23 @@ namespace Imgeneus.Login.Packets
             client.SendPacket(packet);
             SendServerList(client);
         }
+
+        public static void SelectServerFailed(LoginClient client, SelectServer error)
+        {
+            using var packet = new Packet(PacketType.SELECT_SERVER);
+            packet.Write<sbyte>((sbyte)error);
+            packet.Write(new byte[4]);
+
+            client.SendPacket(packet);
+        }
+
+        public static void SelectServerSuccess(LoginClient client, byte[] worldIp)
+        {
+            using var packet = new Packet(PacketType.SELECT_SERVER);
+            packet.Write<sbyte>((sbyte)SelectServer.Success);
+            packet.Write(worldIp);
+
+            client.SendPacket(packet);
+        }
     }
 }

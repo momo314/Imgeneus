@@ -62,12 +62,40 @@ namespace Imgeneus.Login
 
         [PacketHandler(PacketType.SELECT_SERVER)]
         public static void OnSelectServer(LoginClient client, IPacketStream packet)
-        {
-            throw new NotImplementedException();
-            // TODO: Check build version and the current world status.
+        { 
+            if (packet.Length != 9)
+            {
+                return;
+            }
+
+            byte worldId = packet.Read<byte>();
+            int buildClient = packet.Read<int>();
+
+            var server = DependencyContainer.Instance.Resolve<ILoginServer>();
+            var worldInfo = server.GetWorldByID(worldId);
+
+            if (worldInfo == null)
+            {
+                LoginPacketFactory.SelectServerFailed(client, SelectServer.CannotConnect);
+                return;
+            }
+
+            if (worldInfo.BuildVersion != buildClient)
+            {
+                LoginPacketFactory.SelectServerFailed(client, SelectServer.VersionDoesntMatch);
+                return;
+            }
+
+            if (worldInfo.ConnectedUsers >= worldInfo.MaxAllowedUsers)
+            {
+                LoginPacketFactory.SelectServerFailed(client, SelectServer.ServerSaturated);
+                return;
+            }
+
+            LoginPacketFactory.SelectServerSuccess(client, worldInfo.Host);
         }
 
-        [PacketHandler(PacketType.LOGIN_TERMINATE)]
+        [PacketHandler(PacketType.CLOSE_CONNECTION)]
         public static void OnCloseConnection(LoginClient client, IPacketStream packet)
         {
             throw new NotImplementedException();

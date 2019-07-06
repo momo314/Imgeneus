@@ -7,7 +7,7 @@ namespace Imgeneus.World
         private static void Main(string[] args)
         {
             ConsoleAppBootstrapper.CreateApp()
-                .SetConsoleTitle("Rhisis - World Server")
+                .SetConsoleTitle("Imgeneus - World Server")
                 .SetCulture("en-US")
                 .UseStartup<WorldServerStartup>()
                 .Run();

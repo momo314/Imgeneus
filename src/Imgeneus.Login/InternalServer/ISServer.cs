@@ -49,5 +49,12 @@ namespace Imgeneus.Login.InternalServer
         /// </summary>
         public IEnumerable<WorldServerInfo> WorldServers => this.clients.Values.Select(x => x.WorldServerInfo);
 
+
+        /// <summary>
+        /// Gets a world server by id.
+        /// </summary>
+        public WorldServerInfo GetWorldServerByID(byte id) 
+            => this.clients.Values.Select(x => x.WorldServerInfo).FirstOrDefault(x => x.Id == id);
+
     }
 }

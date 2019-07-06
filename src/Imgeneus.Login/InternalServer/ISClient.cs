@@ -53,5 +53,14 @@ namespace Imgeneus.Login.InternalServer
                 this.logger.LogDebug(exception.InnerException?.StackTrace);
             }
         }
+
+        public void SetWordServerInfo(WorldServerInfo worldServerInfo)
+        {
+            if (this.WorldServerInfo != null)
+            {
+                throw new InvalidOperationException("Client world server info already set.");
+            }
+            this.WorldServerInfo = worldServerInfo;
+        }
     }
 }

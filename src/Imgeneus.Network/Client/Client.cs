@@ -74,14 +74,14 @@ namespace Imgeneus.Network.Client
             SocketAsyncEventArgs socketConnectEventArgs = this.CreateSocketEventArgs(null);
             socketConnectEventArgs.RemoteEndPoint = NetworkHelper.CreateIPEndPoint(this.ClientConfiguration.Host, this.ClientConfiguration.Port);
 
-            this.connector.Connect(socketConnectEventArgs);
+            SocketError error = this.connector.Connect(socketConnectEventArgs);
 
-            if (!this.IsConnected)
+            if (!this.IsConnected && error != SocketError.Success)
             {
                 this.OnError(new InvalidOperationException("No se puede conectar con el servidor."));
                 return;
             }
-
+            
             this.IsRunning = true;
             this.sender.Start();
         }

@@ -66,6 +66,9 @@ namespace Imgeneus.Login
         public bool IsClientConnected(int userID) => this.GetClientByUserID(userID) != null;
 
         /// <inheritdoc />
+        public WorldServerInfo GetWorldByID(byte id) => this.InterServer.GetWorldServerByID(id);
+
+        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             if (this.InterServer != null)

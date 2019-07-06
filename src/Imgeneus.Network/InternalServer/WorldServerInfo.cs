@@ -7,12 +7,12 @@ namespace Imgeneus.Network.InternalServer
         /// <summary>
         /// Gets or sets the world server unique id.
         /// </summary>
-        public int Id { get; set; }
+        public byte Id { get; set; }
 
         /// <summary>
         /// Gets or sets the world server host.
         /// </summary>
-        public string Host { get; set; }
+        public byte[] Host { get; set; }
 
         /// <summary>
         /// Gets or sets the world server name.
@@ -39,15 +39,14 @@ namespace Imgeneus.Network.InternalServer
         /// </summary>
         public WorldState WorldStatus { get; set; }
 
-        public WorldServerInfo(int id, string host, string name, int buildVersion, ushort connectedusers, ushort maxAllowedUsers, WorldState status)
+        public WorldServerInfo(byte id, byte[] host, string name, int buildVersion, ushort maxAllowedUsers)
         {
             this.Id = id;
             this.Host = host;
             this.Name = name;
             this.BuildVersion = buildVersion;
-            this.ConnectedUsers = connectedusers;
             this.MaxAllowedUsers = maxAllowedUsers;
-            this.WorldStatus = status;
+            this.WorldStatus = WorldState.Normal;
         }
     }
 }
