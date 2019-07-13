@@ -29,6 +29,6 @@ In this documentation, you will find every Shaiya packet structure.
 
 ### Common Packets
 
-### CLOSE_CONNECTION (0x0107)
+#### CLOSE_CONNECTION (0x0107)
 
 This is an empty packet, used for terminate the client connection.
