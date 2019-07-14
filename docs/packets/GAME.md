@@ -38,7 +38,7 @@
 | Name | byte[19] | The Chatacter name. |
 | Delete | bool | The Chatacter deletion flag. |
 | Rename | bool | The Chatacter rename flag. |
-| Cape emblems | byte[8] | The Chatacter equiping cape emblems. |
+| Cape emblems | byte[6] | The Chatacter equiping cape emblems. |
 
 ### CREATE_CHARACTER (0x0102)
 
