@@ -48,6 +48,18 @@ namespace Imgeneus.Database.Entities
         public int Points { get; set; }
 
         /// <summary>
+        /// Gets or sets the user current faction.
+        /// </summary>
+        [DefaultValue(2)]
+        public byte Faction { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user current maximum mode allowed.
+        /// </summary>
+        [DefaultValue(0)]
+        public byte MaxMode { get; set; }
+
+        /// <summary>
         /// Gets the user's creation time.
         /// </summary>
         [Column(TypeName = "DATETIME")]

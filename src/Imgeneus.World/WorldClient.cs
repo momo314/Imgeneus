@@ -13,6 +13,16 @@ namespace Imgeneus.World
     {
         private readonly ILogger<WorldClient> logger;
 
+        /// <summary>
+        /// Gets the client's logged user id.
+        /// </summary>
+        public int UserID { get; private set; }
+
+        /// <summary>
+        /// Check if the client is connected.
+        /// </summary>
+        public bool IsConnected => this.UserID != 0;
+
         public WorldClient(IServer server, Socket acceptedSocket)
             : base(server, acceptedSocket)
         {
@@ -46,6 +56,20 @@ namespace Imgeneus.World
                 this.logger.LogError("Packet handle error from {0}. {1}", this.RemoteEndPoint, exception.Message);
                 this.logger.LogDebug(exception.InnerException?.StackTrace);
             }
+        }
+
+        /// <summary>
+        /// Sets the client's user id.
+        /// </summary>
+        /// <param name="userID">The client user id.</param>
+        public void SetClientUserID(int userID)
+        {
+            if (this.UserID != 0)
+            {
+                throw new InvalidOperationException("Client user ID already set.");
+            }
+
+            this.UserID = userID;
         }
     }
 }
