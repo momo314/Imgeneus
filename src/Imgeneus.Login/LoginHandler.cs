@@ -26,14 +26,9 @@ namespace Imgeneus.Login
                 return;
             }
 
-            string username = packet.ReadString(19);
+            var authenticationPacket = new AuthenticationPacket(packet);
 
-            // Skip an unknow param
-            packet.Skip(13);
-
-            string password = packet.ReadString(16);
-
-            var result = Authentication(username, password);
+            var result = Authentication(authenticationPacket.Username, authenticationPacket.Password);
 
             if (result != AuthenticationResult.SUCCESS)
             {
@@ -43,7 +38,7 @@ namespace Imgeneus.Login
             var loginServer = DependencyContainer.Instance.Resolve<ILoginServer>();
 
             using var database = DependencyContainer.Instance.Resolve<IDatabase>();
-            DbUser dbUser = database.Users.Get(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            DbUser dbUser = database.Users.Get(x => x.Username.Equals(authenticationPacket.Username, StringComparison.OrdinalIgnoreCase));
 
             if (loginServer.IsClientConnected(dbUser.Id))
             {
@@ -68,11 +63,10 @@ namespace Imgeneus.Login
                 return;
             }
 
-            byte worldId = packet.Read<byte>();
-            int buildClient = packet.Read<int>();
+            var selectServerPacket = new SelectServerPacket(packet);
 
             var server = DependencyContainer.Instance.Resolve<ILoginServer>();
-            var worldInfo = server.GetWorldByID(worldId);
+            var worldInfo = server.GetWorldByID(selectServerPacket.WorldId);
 
             if (worldInfo == null)
             {
@@ -80,7 +74,7 @@ namespace Imgeneus.Login
                 return;
             }
 
-            if (worldInfo.BuildVersion != buildClient)
+            if (worldInfo.BuildVersion != selectServerPacket.BuildClient)
             {
                 LoginPacketFactory.SelectServerFailed(client, SelectServer.VersionDoesntMatch);
                 return;

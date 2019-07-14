@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace Imgeneus.Login.Packets
 {
-    public static class LoginPacketFactory
+    internal static class LoginPacketFactory
     {
         public static void SendLoginHandshake(LoginClient client)
         {
