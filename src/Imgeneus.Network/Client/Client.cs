@@ -14,6 +14,7 @@ namespace Imgeneus.Network.Client
         private readonly ClientConnector connector;
         private ClientReceiver receiver;
         private ClientSender sender;
+        private SocketAsyncEventArgs connectSocket;
 
         /// <inheritdoc />
         public bool IsConnected => this.Socket.Connected;
@@ -71,10 +72,10 @@ namespace Imgeneus.Network.Client
 
             this.sender = new ClientSender(this.CreateSocketEventArgs(null));
             this.receiver = new ClientReceiver(this);
-            SocketAsyncEventArgs socketConnectEventArgs = this.CreateSocketEventArgs(null);
-            socketConnectEventArgs.RemoteEndPoint = NetworkHelper.CreateIPEndPoint(this.ClientConfiguration.Host, this.ClientConfiguration.Port);
+            this.connectSocket = this.CreateSocketEventArgs(null);
+            this.connectSocket.RemoteEndPoint = NetworkHelper.CreateIPEndPoint(this.ClientConfiguration.Host, this.ClientConfiguration.Port);
 
-            SocketError error = this.connector.Connect(socketConnectEventArgs);
+            SocketError error = this.connector.Connect(this.connectSocket);
 
             if (!this.IsConnected && error != SocketError.Success)
             {
@@ -89,9 +90,14 @@ namespace Imgeneus.Network.Client
         /// <inheritdoc />
         public void Disconnect()
         {
+            if (!IsRunning)
+            {
+                return;
+            }
             this.IsRunning = false;
             this.Socket.Disconnect(true);
             this.sender.Stop();
+            this.connectSocket.Dispose();
         }
 
         /// <inheritdoc />
@@ -172,6 +178,7 @@ namespace Imgeneus.Network.Client
             this.sender.Dispose();
             this.connector.Dispose();
             base.Dispose(disposing);
+            this.connectSocket.Dispose();
         }
     }
 }

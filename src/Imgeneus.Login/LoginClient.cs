@@ -16,12 +16,12 @@ namespace Imgeneus.Login
         /// <summary>
         /// Gets the client's logged user id.
         /// </summary>
-        public int UserID { get; private set; }
+        public int UserId { get; private set; }
 
         /// <summary>
         /// Check if the client is connected.
         /// </summary>
-        public bool IsConnected => this.UserID != 0;
+        public bool IsConnected => this.UserId != 0;
 
         /// <summary>
         /// Creates a new <see cref="LoginClient"/> instance.
@@ -40,12 +40,12 @@ namespace Imgeneus.Login
         /// <param name="userID">The client user id.</param>
         public void SetClientUserID(int userID)
         {
-            if (this.UserID != 0)
+            if (this.UserId != 0)
             {
                 throw new InvalidOperationException("Client user ID already set.");
             }
 
-            this.UserID = userID;
+            this.UserId = userID;
         }
 
         /// <inheritdoc />

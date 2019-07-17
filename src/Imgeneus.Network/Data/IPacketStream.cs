@@ -73,22 +73,12 @@ namespace Imgeneus.Network.Data
         /// Sets the position within the current stream to the specified value.
         /// </summary>
         /// <param name="offset">The new position within the stream. This is relative to the loc parameter, and can be positive or negative.</param>
-        /// <param name="loc">A value of type <see cref="T:System.IO.SeekOrigin"></see>, which acts as the seek reference point.</param>
+        /// <param name="loc">A value of type <see cref="SeekOrigin"/>, which acts as the seek reference point.</param>
         /// <returns>
         /// The new position within the stream, calculated by combining the initial 
         /// reference point and the offset.
         /// </returns>
         long Seek(long offset, SeekOrigin loc);
-
-        /// <summary>
-        /// Returns the array of unsigned bytes from which this stream was created.
-        /// </summary>
-        /// <returns>
-        /// The byte array from which this stream was created, or the underlying array if
-        /// a byte array was not provided to the System.IO.MemoryStream constructor during
-        /// construction of the current instance.
-        /// </returns>
-        byte[] GetBuffer();
 
         /// <summary>
         /// Skips a number of bytes.

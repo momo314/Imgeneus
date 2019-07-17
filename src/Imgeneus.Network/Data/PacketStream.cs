@@ -98,12 +98,12 @@ namespace Imgeneus.Network.Data
 
             var value = Encoding.Default.GetString(this.reader.ReadBytes(size));
 
-            if (value.IndexOf('\0') < 0)
+            if (value.IndexOf('\0', StringComparison.Ordinal) < 0)
             {
                 return value;
             }
 
-            return value.Substring(0, value.IndexOf('\0'));
+            return value.Substring(0, value.IndexOf('\0', StringComparison.Ordinal));
         }
 
         /// <inheritdoc />
@@ -128,9 +128,14 @@ namespace Imgeneus.Network.Data
                 throw new InvalidOperationException("Packet is in read-only mode.");
             }
 
+            if (value == null)
+            {
+                throw new ArgumentNullException("The string value can't be null.");
+            }
+
             if (value.Length > count)
             {
-                throw new InvalidOperationException("The string is too big");
+                throw new InvalidOperationException("The string is too big.");
             }
 
             byte[] buffer = new byte[count];
@@ -149,7 +154,7 @@ namespace Imgeneus.Network.Data
         /// Gets the stream buffer.
         /// </summary>
         /// <returns></returns>
-        private byte[] GetStreamBuffer() => this.TryGetBuffer(out ArraySegment<byte> buffer) ? buffer.ToArray() : new byte[0];
+        private byte[] GetStreamBuffer() => this.TryGetBuffer(out ArraySegment<byte> buffer) ? buffer.ToArray() : Array.Empty<byte>();
 
         /// <summary>
         /// Read methods dictionary.

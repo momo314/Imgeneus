@@ -60,7 +60,7 @@ namespace Imgeneus.Login
 
         /// <inheritdoc />
         public LoginClient GetClientByUserID(int userID)
-            => this.clients.Values.FirstOrDefault(x => x.IsConnected && x.UserID == userID);
+            => this.clients.Values.FirstOrDefault(x => x.IsConnected && x.UserId == userID);
 
         /// <inheritdoc />
         public bool IsClientConnected(int userID) => this.GetClientByUserID(userID) != null;

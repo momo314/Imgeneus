@@ -56,7 +56,7 @@ namespace Imgeneus.Network.Server
         /// <param name="configuration">The <see cref="Server.ServerConfiguration"/>.</param>
         public Server(ServerConfiguration configuration)
         {
-            this.ServerConfiguration = configuration;
+            this.ServerConfiguration = configuration ?? throw new ArgumentNullException("Configuration can't be null.");
             this.clients = new ConcurrentDictionary<Guid, T>();
             this.acceptor = new ServerAcceptor<T>(this);
             this.receiver = new ServerReceiver(this);

@@ -20,7 +20,7 @@ namespace Imgeneus.Database.Entities
         /// </summary>
         [Required]
         [DefaultValue(1)]
-        public byte Level { get; set; }
+        public ushort Level { get; set; }
 
         /// <summary>
         /// Gets or sets the character account slot.
@@ -32,13 +32,13 @@ namespace Imgeneus.Database.Entities
         /// Gets or sets the character Family.
         /// </summary>
         [Required]
-        public byte Family { get; set; }
+        public byte Race { get; set; }
 
         /// <summary>
         /// Gets or sets the character Race.
         /// </summary>
         [Required]
-        public byte Race { get; set; }
+        public byte Class { get; set; }
 
         /// <summary>
         /// Gets or sets the character mode.

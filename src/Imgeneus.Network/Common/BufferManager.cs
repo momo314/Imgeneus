@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 
 namespace Imgeneus.Network.Common
@@ -41,6 +42,11 @@ namespace Imgeneus.Network.Common
         /// <returns>True if the buffer was successfully set, else false</returns>
         public bool SetBuffer(SocketAsyncEventArgs args)
         {
+            if (args == null)
+            {
+                throw new ArgumentNullException("Cannot set buffer to null socket.");
+            }
+
             if (this.freeBufferIndexes.TryPop(out int index))
             {
                 args.SetBuffer(this.buffer, index, this.bufferSize);
@@ -65,6 +71,11 @@ namespace Imgeneus.Network.Common
         /// <param name="args">The <see cref="SocketAsyncEventArgs"/> to free buffer.</param>
         public void FreeBuffer(SocketAsyncEventArgs args)
         {
+            if (args == null)
+            {
+                throw new ArgumentNullException("Cannot free buffer to null socket.");
+            }
+
             this.freeBufferIndexes.Push(args.Offset);
             args.SetBuffer(null, 0, 0);
         }

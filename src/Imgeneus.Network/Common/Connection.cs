@@ -62,6 +62,7 @@ namespace Imgeneus.Network.Common
         public void Dispose()
         {
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
