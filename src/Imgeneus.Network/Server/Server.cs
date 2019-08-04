@@ -40,17 +40,6 @@ namespace Imgeneus.Network.Server
         public bool IsRunning { get; private set; }
 
         /// <summary>
-        /// Crestes a default <see cref="Server{T}"/> instance.
-        /// </summary>
-        /// <param name="host">The server host.</param>
-        /// <param name="port">The server listening port.</param>
-        public Server(string host, int port, int maxNumberOfConnections)
-            : this(new ServerConfiguration(host, port, maxNumberOfConnections))
-        {
-
-        }
-
-        /// <summary>
         /// Creates a new <see cref="Server{T}"/> using <see cref="Server.ServerConfiguration"/>.
         /// </summary>
         /// <param name="configuration">The <see cref="Server.ServerConfiguration"/>.</param>
