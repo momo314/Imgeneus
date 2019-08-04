@@ -18,13 +18,13 @@
         /// <summary>
         /// Gets or sets the Inter-Server configuration
         /// </summary>
-        public InterServerConfiguration InterServerConfiguration { get; set; }
+        public CoreConfiguration InterServerConfiguration { get; set; }
 
         public WorldConfiguration()
         {
             this.Port = this.defaultPort;
             this.Name = this.defaultName;
-            this.InterServerConfiguration = new InterServerConfiguration();
+            this.InterServerConfiguration = new CoreConfiguration();
         }
     }
 }
